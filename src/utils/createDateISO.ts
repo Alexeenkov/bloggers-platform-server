@@ -1,1 +1,0 @@
-import {ISO8601String} from "../interfaces";import {REGEXPS} from "../constants/regexps";export const createDateISO = (date: string): ISO8601String => {    if (!REGEXPS.date_ISO.test(date)) {        throw new Error(`Invalid ISO 8601 string: ${date}`);    }    return date as ISO8601String;}

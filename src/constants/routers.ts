@@ -1,1 +1,1 @@
-export const ROUTERS = {    videos: '/videos',    testing: '/testing',} as const;
+interface RoutersModel {    blogs: string    posts: string    testing: string}export const ROUTERS: RoutersModel = {    blogs: '/blogs',    posts: '/posts',    testing: '/testing',} as const;

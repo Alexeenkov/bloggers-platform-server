@@ -1,0 +1,1 @@
+export interface PostModel {    title: string    shortDescription: string    content: string    blogId: string}export interface PostWithIdModel extends PostModel {    id: string    blogName: string}

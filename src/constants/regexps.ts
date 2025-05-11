@@ -1,1 +1,1 @@
-export const REGEXPS = {    date_ISO: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,};
+interface RegExpsModel {    websiteUrl: RegExp}export const REGEXPS: RegExpsModel = {    websiteUrl: /^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/,};

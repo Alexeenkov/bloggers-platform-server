@@ -1,0 +1,1 @@
+export interface BlogModel {    name: string    description: string    websiteUrl: string}export interface BlogWithIdModel extends BlogModel {    id: string}

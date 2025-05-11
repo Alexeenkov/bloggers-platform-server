@@ -1,1 +1,1 @@
-export * from './videosRouter';export * from './testingRouter';
+export * from './blogs/blogsRouter';export * from './posts/postsRouter';export * from './testing/testingRouter';
