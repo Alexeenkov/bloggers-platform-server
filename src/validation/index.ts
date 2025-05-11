@@ -1,0 +1,1 @@
+export * from './validatesCreateVideo';export * from './validatesUpdateVideo';

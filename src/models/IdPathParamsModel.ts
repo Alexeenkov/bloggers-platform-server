@@ -1,0 +1,1 @@
+import {ParamsDictionary} from 'express-serve-static-core';export interface IdPathParamsModel extends ParamsDictionary {    id: string}

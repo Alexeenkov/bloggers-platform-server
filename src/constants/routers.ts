@@ -1,0 +1,1 @@
+export const ROUTERS = {    videos: '/videos',    testing: '/testing',} as const;

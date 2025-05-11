@@ -1,0 +1,1 @@
+import {IVideosWithId} from "./Videos";export interface IDataBase {    videos: IVideosWithId[]}

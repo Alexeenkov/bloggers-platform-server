@@ -1,0 +1,1 @@
+import {VideoQualityEnum} from "../constants/enum";import {ISO8601String} from "../interfaces";export interface UpdateVideoModel {    title: string    author: string    canBeDownloaded: boolean    minAgeRestriction: number | null    publicationDate: ISO8601String,    availableResolutions: VideoQualityEnum[]}
