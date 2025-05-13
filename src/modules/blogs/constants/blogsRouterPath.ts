@@ -1,0 +1,1 @@
+export const BLOGS_ROUTER_PATH = '/blogs' as const;

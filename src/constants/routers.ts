@@ -1,1 +1,0 @@
-interface RoutersModel {    blogs: string    posts: string    testing: string}export const ROUTERS: RoutersModel = {    blogs: '/blogs',    posts: '/posts',    testing: '/testing',} as const;

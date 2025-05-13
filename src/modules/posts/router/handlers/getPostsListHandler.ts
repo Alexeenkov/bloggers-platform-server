@@ -1,0 +1,1 @@
+import {Request, Response} from "express";import {HTTP_STATUSES} from "../../../../shared/constants/httpStatuses";import {Index} from "../../../../db";import {PostWithIdModel} from "../../models";export const getPostsListHandler = (_: Request, res: Response<PostWithIdModel[]>) => {    res        .status(HTTP_STATUSES.OK)        .json(Index.posts);}

@@ -1,0 +1,1 @@
+export const POSTS_ROUTER_PATH = '/posts' as const;

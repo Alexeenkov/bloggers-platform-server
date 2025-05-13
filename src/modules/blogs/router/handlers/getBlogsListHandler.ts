@@ -1,0 +1,1 @@
+import {Request, Response} from "express";import {HTTP_STATUSES} from "../../../../shared/constants/httpStatuses";import {Index} from "../../../../db";import {BlogWithIdModel} from "../../models";export const getBlogsListHandler = (_: Request, res: Response<BlogWithIdModel[]>) => {    res        .status(HTTP_STATUSES.OK)        .json(Index.blogs);}

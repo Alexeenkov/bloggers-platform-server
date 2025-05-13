@@ -1,0 +1,1 @@
+export const TESTING_ROUTER_PATH = '/testing' as const;
