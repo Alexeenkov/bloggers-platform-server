@@ -1,0 +1,11 @@
+openapi: 3.0.0
+info:
+  title: Bloggers platform
+  version: 1.0.0
+  description: Bloggers platform API documentation
+
+tags:
+  - name: Blogs
+    description: CRUD для управления блогами
+  - name: Posts
+    description: CRUD для управления постами

@@ -24,7 +24,7 @@ export const resultValidationMiddleware = (
   const errors: ValidationErrorModel[] = validationResult(req).formatWith(formatErrors).array({ onlyFirstError: true });
 
   if (errors.length > 0) {
-    res.status(HTTP_STATUSES.BAD_REQUEST).json({ errorMessages: errors });
+    res.status(HTTP_STATUSES.BAD_REQUEST).json({ errorsMessages: errors });
 
     return;
   }

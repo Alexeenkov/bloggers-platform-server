@@ -1,1 +1,1 @@
-export const TESTING_ROUTER_PATH = '/testing' as const;
+export const TESTING_ROUTER_PATH = '/api/testing' as const;

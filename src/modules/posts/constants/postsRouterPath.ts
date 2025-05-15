@@ -1,1 +1,1 @@
-export const POSTS_ROUTER_PATH = '/posts' as const;
+export const POSTS_ROUTER_PATH = '/api/posts' as const;

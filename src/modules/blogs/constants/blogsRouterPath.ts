@@ -1,1 +1,1 @@
-export const BLOGS_ROUTER_PATH = '/blogs' as const;
+export const BLOGS_ROUTER_PATH = '/api/blogs' as const;
