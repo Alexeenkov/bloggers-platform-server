@@ -12,6 +12,7 @@ const swaggerOptions = {
     },
   },
   apis: ['./src/**/*.swagger.yml'],
+  customCssUrl: './public/swagger-ui.css',
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
