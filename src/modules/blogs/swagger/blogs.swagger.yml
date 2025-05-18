@@ -119,6 +119,7 @@ paths:
           description: "Не прошёл авторизацию"
         404:
           description: "Такого блога нет по указанному ID"
+
 components:
   securitySchemes:
     BasicAuth:

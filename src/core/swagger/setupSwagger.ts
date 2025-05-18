@@ -11,7 +11,7 @@ const swaggerOptions = {
       description: 'Bloggers platform API. Всё для Евгения',
     },
   },
-  apis: ['./src/**/*.swagger.yml'],
+  apis: ['./src/modules/**/*.swagger.yml'],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);

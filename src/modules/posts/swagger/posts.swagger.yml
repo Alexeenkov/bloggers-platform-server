@@ -119,6 +119,7 @@ paths:
           description: "Не прошёл авторизацию"
         404:
           description: "Такого поста нет по указанному ID"
+
 components:
   securitySchemes:
     BasicAuth:
