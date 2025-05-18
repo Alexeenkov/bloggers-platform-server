@@ -8,11 +8,5 @@ node_modules
 dist
 .idea
 
-#cicd files
-cicd.json
-build-jobs.yml
-.ops/helm/service/projects-deploy-info.yml
-values.yaml
-
 #editor settings
 .vscode
