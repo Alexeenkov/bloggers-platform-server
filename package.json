@@ -4,7 +4,8 @@
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "watch": "yarn copyfiles -u 1 src/core/swagger/swagger.html dist/ && yarn tsc -w",
+    "copy-swagger": "yarn copyfiles -u 1 src/core/swagger/index.html dist/ && yarn copyfiles -u 1 src/core/swagger/specSwagger.js dist/",
+    "watch": "yarn copy-swagger && yarn tsc -w",
     "dev": "yarn nodemon --inspect ./dist/index.js",
     "test": "jest --detectOpenHandles --no-cache --watchAll --config ./__tests__/jest-e2e.config.js"
   },
