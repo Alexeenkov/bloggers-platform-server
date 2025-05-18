@@ -1,1 +1,1 @@
-{  "version": 2,  "name": "videos-server",  "builds": [    {      "src": "src/index.ts",      "use": "@vercel/node"    }  ],  "routes": [    {      "src": "/(.*)",      "dest": "src/index.ts"    }  ]}
+{  "version": 2,  "name": "videos-server",  "builds": [    {      "src": "src/index.ts",      "use": "@vercel/node"    }  ],  "routes": [    {      "src": "/api/swagger-ui.css",      "dest": "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css"    },    {      "src": "/(.*)",      "dest": "src/index.ts"    }  ]}
