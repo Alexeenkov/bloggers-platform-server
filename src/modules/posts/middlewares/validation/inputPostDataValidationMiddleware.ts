@@ -16,7 +16,7 @@ const contentValidation =
     body('content')
         .isString().withMessage('content should be string')
         .trim()
-        .isLength({ min: 10, max: 1000 }).withMessage('Length of content is not correct (must be from 20 to 1000 characters)');
+        .isLength({ max: 1000 }).withMessage('Length of content is not correct (must be from 10 to 1000 characters)');
 
 const blogIdValidation =
     body('blogId')
