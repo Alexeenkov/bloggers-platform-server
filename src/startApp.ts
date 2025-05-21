@@ -1,0 +1,1 @@
+import {Express} from "express";import {runDb} from "./mongodb/db";const PORT = process.env.PORT || 3003;export const startApp = async (app: Express) => {    await runDb();    app.listen(PORT, () => {        console.log(`listening port: ${PORT}`);    });};

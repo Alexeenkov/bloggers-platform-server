@@ -1,1 +1,1 @@
-import express from 'express'import {setupApp} from "./setupApp";const PORT = process.env.PORT || 3003;const app = express();setupApp(app);app.listen(PORT, () => {    console.log(`listening port: ${PORT}`);});export = app;
+import express from 'express'import {setupApp} from "./setupApp";import {startApp} from "./startApp";const app = express();setupApp(app);startApp(app);export = app;
