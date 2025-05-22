@@ -1,1 +1,1 @@
-export interface BlogModel {    name: string    description: string    websiteUrl: string}export interface BlogWithIdModel extends BlogModel {    id: string}
+import {ISO8601StringModel} from "../../../shared/models/ISO8601StringModel";export interface BlogModel {    name: string    description: string    websiteUrl: string}export interface BlogWithIdModel extends BlogModel {    id: string    createdAt: ISO8601StringModel}

@@ -1,0 +1,1 @@
+export type ISO8601StringModel = string & { __type: 'ISO8601String' };
