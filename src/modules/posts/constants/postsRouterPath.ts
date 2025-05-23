@@ -1,1 +1,1 @@
-export const POSTS_ROUTER_PATH = '/api/posts' as const;
+import {API_ROUTER_PATH} from "../../../shared/constants/apiRoterPath";export const POSTS_ROUTER_PATH = `${API_ROUTER_PATH}/posts`;
