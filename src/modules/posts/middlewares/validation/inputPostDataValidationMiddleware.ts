@@ -1,4 +1,5 @@
 import {body, ValidationChain} from 'express-validator';
+import {ObjectId} from "mongodb";
 
 const titleValidation =
     body('title')
@@ -20,9 +21,7 @@ const contentValidation =
 
 const blogIdValidation =
     body('blogId')
-        .notEmpty().withMessage('blogId should not be empty')
-        .isString().withMessage('blogId should be string')
-        .trim();
+        .custom((id) => ObjectId.isValid(id));
 
 export const inputPostDataValidationMiddleware: ValidationChain[] = [
     titleValidation,

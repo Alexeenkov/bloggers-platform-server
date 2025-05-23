@@ -1,7 +1,6 @@
 import { param } from 'express-validator';
+import {ObjectId} from "mongodb";
 
 export const idValidationMiddleware =
     param('id')
-        .exists().withMessage('ID is required')
-        .isString().withMessage('ID must be a string')
-        .isLength({ min: 1 }).withMessage('ID must not be empty');
+        .custom((id) => ObjectId.isValid(id));
