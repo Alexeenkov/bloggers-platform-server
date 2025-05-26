@@ -1,1 +1,1 @@
-import express from 'express'import {setupApp} from "./setupApp";import {startApp} from "./startApp";const app = express();setupApp(app);startApp(app);export = app;
+import express from 'express'import {setupApp} from "./setupApp";import {startApp} from "./startApp";const app = express();setupApp(app);startApp(app);

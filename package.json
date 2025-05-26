@@ -7,7 +7,7 @@
     "copy-swagger": "yarn copyfiles -u 1 src/docs/swagger/index.html dist/ && yarn copyfiles -u 1 src/docs/swagger/specSwagger.js dist/",
     "watch": "yarn copy-swagger && yarn tsc -w",
     "dev": "yarn nodemon --inspect ./dist/index.js",
-    "test": "jest --detectOpenHandles --no-cache --watchAll --config ./__tests__/jest-e2e.config.js"
+    "test": "jest --detectOpenHandles --no-cache --config ./__tests__/jest-e2e.config.js"
   },
   "dependencies": {
     "express": "5.1.0",
