@@ -4,4 +4,5 @@ module.exports = {
   transform: {
     "^.+\.tsx?$": ["ts-jest",{}],
   },
+  testRegex: ".api.test.ts$",
 };
