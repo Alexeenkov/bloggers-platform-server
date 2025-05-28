@@ -4,7 +4,7 @@ import {
   validationResult,
 } from 'express-validator';
 import {NextFunction, Request, Response} from 'express';
-import {ValidationErrorModel} from "../../models";
+import type {ValidationErrorModel} from "../../models";
 import {HTTP_STATUSES} from "../../constants/httpStatuses";
 
 const formatErrors = (error: ValidationError): ValidationErrorModel => {

@@ -1,0 +1,1 @@
+export const SORT_DIRECTION = {    asc: 'asc',    desc: 'desc',} as const;export type SortDirectionType = typeof SORT_DIRECTION[keyof typeof SORT_DIRECTION];

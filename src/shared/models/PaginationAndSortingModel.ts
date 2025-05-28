@@ -1,0 +1,1 @@
+import {SortDirectionType} from "../constants/sortDirection";export interface PaginationAndSortingModel {    searchNameTerm?: string    pageNumber: number    pageSize: number    sortBy: string    sortDirection: SortDirectionType}
