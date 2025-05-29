@@ -1,6 +1,4 @@
 import { param } from 'express-validator';
-import {ObjectId} from "mongodb";
 
 export const idValidationMiddleware =
-    param('id')
-        .custom((id) => ObjectId.isValid(id));
+    param('id').isMongoId().withMessage('Invalid id (must be ObjectId mongodb format)');
