@@ -20,8 +20,7 @@ const contentValidation =
         .isLength({ min: 2, max: 1000 }).withMessage('Length of content is not correct (must be from 2 to 1000 characters)');
 
 const blogIdValidation =
-    body('blogId')
-        .custom((id) => ObjectId.isValid(id));
+    body('blogId').isMongoId().withMessage('Invalid id (must be ObjectId mongodb format)');
 
 export const inputPostDataValidationMiddleware: ValidationChain[] = [
     titleValidation,
