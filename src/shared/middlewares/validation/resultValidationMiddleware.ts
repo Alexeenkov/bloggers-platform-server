@@ -4,7 +4,7 @@ import {
   validationResult,
 } from 'express-validator';
 import {NextFunction, Request, Response} from 'express';
-import type {ValidationErrorModel} from "../../models";
+import {ErrorMessagesModel, ValidationErrorModel} from "../../models";
 import {HTTP_STATUSES} from "../../constants/httpStatuses";
 
 const formatErrors = (error: ValidationError): ValidationErrorModel => {
@@ -18,7 +18,7 @@ const formatErrors = (error: ValidationError): ValidationErrorModel => {
 
 export const resultValidationMiddleware = (
   req: Request,
-  res: Response,
+  res: Response<ErrorMessagesModel>,
   next: NextFunction,
 ) => {
   const errors: ValidationErrorModel[] = validationResult(req).formatWith(formatErrors).array({ onlyFirstError: true });
