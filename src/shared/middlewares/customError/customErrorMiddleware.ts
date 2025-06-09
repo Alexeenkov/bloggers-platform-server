@@ -1,0 +1,23 @@
+import {Request, Response, NextFunction} from "express";
+import {CustomError} from "../../utils/CustomError";
+import {ErrorMessagesModel} from "../../models";
+import {HTTP_STATUSES} from "../../constants/httpStatuses";
+
+export const customErrorMiddleware = (
+    err: Error,
+    _: Request,
+    res: Response<ErrorMessagesModel>,
+) => {
+    if (err instanceof CustomError) {
+        res.status(err.statusCode).send({
+            errorsMessages: [{
+                field: err.field,
+                message: err.message,
+            }]
+        });
+
+        return;
+    }
+
+    res.sendStatus(HTTP_STATUSES.SERVER_ERROR);
+};

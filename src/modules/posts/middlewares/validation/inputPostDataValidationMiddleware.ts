@@ -1,5 +1,4 @@
 import {body, ValidationChain} from 'express-validator';
-import {ObjectId} from "mongodb";
 
 const titleValidation =
     body('title')

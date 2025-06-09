@@ -1,1 +1,0 @@
-export interface ValidationErrorModel {    field: string    message: string}export interface ErrorMessagesModel {    errorsMessages: ValidationErrorModel[]}
