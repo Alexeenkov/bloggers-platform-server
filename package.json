@@ -10,6 +10,7 @@
     "test": "jest --detectOpenHandles --no-cache"
   },
   "dependencies": {
+    "bcrypt": "6.0.0",
     "express": "5.1.0",
     "express-validator": "7.2.1",
     "mongodb": "6.16.0",
@@ -17,6 +18,7 @@
     "swagger-ui-express": "5.0.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "5.0.2",
     "@types/express": "5.0.1",
     "@types/jest": "29.5.14",
     "@types/node": "22.14.1",
