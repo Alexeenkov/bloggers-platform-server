@@ -1,0 +1,1 @@
+export interface LoginInputDataModel {    loginOrEmail: string    password: string}
