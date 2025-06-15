@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction} from "express";
+import {Request, Response} from "express";
 import {CustomError} from "../../utils/CustomError";
 import {ErrorMessagesModel} from "../../models";
 import {HTTP_STATUSES} from "../../constants/httpStatuses";
