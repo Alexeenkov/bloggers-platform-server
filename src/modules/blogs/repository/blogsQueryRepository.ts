@@ -56,10 +56,12 @@ export const blogsQueryRepository = {
 
         return db.blogs.findOne(
             {_id},
-            {projection: {
-                name: 1,
-                _id: 0,
-            }},
+            {
+                projection: {
+                    name: 1,
+                    _id: 0,
+                }
+            },
         );
     },
 };

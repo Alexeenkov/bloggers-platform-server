@@ -60,16 +60,16 @@ export const usersQueryRepository = {
     },
 
     async findByLoginOrEmail(login: string, email: string): Promise<UserOutputDataModel | null> {
-         const foundUser = await db.users.findOne({
+        const foundUser = await db.users.findOne({
             $or: [
                 {login},
                 {email},
             ],
         });
 
-         if (!foundUser) {
-             return null;
-         }
+        if (!foundUser) {
+            return null;
+        }
 
         return mappingUser(foundUser);
     },
