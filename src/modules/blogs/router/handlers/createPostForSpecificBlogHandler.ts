@@ -1,1 +1,20 @@
-import {Response} from "express";import type {IdPathParamsModel, RequestWithPathParamsAndBodyModel} from "../../../../shared/models";import {HTTP_STATUSES} from "../../../../shared/constants/httpStatuses";import type {PostInputDataForBlogModel, PostModel} from "../../../posts/models/postsModels";import {postsService} from "../../../posts/application/postsService";import {blogsQueryRepository} from "../../repository/blogsQueryRepository";import {postsQueryRepository} from "../../../posts/repository/postsQueryRepository";export const createPostForSpecificBlogHandler = async (    req: RequestWithPathParamsAndBodyModel<IdPathParamsModel, PostInputDataForBlogModel>,    res: Response<PostModel>,) => {    const blog = await blogsQueryRepository.findBlogName(req.params.id);    if (!blog) {        res.sendStatus(HTTP_STATUSES.NOT_FOUND);        return;    }    const insertedId: string = await postsService.create({        ...req.body,        blogId: req.params.id,        blogName: blog.name,    });    const createdPost = await postsQueryRepository.findById(insertedId);    res.status(HTTP_STATUSES.CREATED).json(<PostModel>createdPost);};
+import {Response} from "express";
+import type {IdPathParamsModel, RequestWithPathParamsAndBodyModel} from "../../../../shared/models";
+import {HTTP_STATUSES} from "../../../../shared/constants/httpStatuses";
+import type {PostInputDataForBlogModel, PostModel} from "../../../posts/models/postsModels";
+import {postsService} from "../../../posts/application/postsService";
+import {postsQueryRepository} from "../../../posts/repository/postsQueryRepository";
+
+export const createPostForSpecificBlogHandler = async (
+    req: RequestWithPathParamsAndBodyModel<IdPathParamsModel, PostInputDataForBlogModel>,
+    res: Response<PostModel>,
+) => {
+    const insertedId = await postsService.create({
+        ...req.body,
+        blogId: req.params.id,
+    });
+
+    const createdPost = await postsQueryRepository.findById(insertedId);
+
+    res.status(HTTP_STATUSES.CREATED).json(<PostModel>createdPost);
+};
