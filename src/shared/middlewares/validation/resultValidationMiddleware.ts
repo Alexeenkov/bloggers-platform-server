@@ -4,8 +4,8 @@ import {
   validationResult,
 } from 'express-validator';
 import {NextFunction, Request, Response} from 'express';
-import {ErrorMessagesModel, ErrorModel} from "../../models";
-import {HTTP_STATUSES} from "../../constants/httpStatuses";
+import {ErrorMessagesModel, ErrorModel} from "@/shared/models";
+import {HTTP_STATUSES} from "@/shared/constants/httpStatuses";
 
 const formatErrors = (error: ValidationError): ErrorModel => {
   const expressError = error as unknown as FieldValidationError;

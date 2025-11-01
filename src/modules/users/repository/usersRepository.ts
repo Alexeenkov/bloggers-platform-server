@@ -1,7 +1,7 @@
-import {db} from "../../../mongodb/db";
+import {db} from "@/mongodb/db";
 import type {InsertOneResult} from "mongodb";
 import {ObjectId} from "mongodb";
-import type {UserModel} from "../models/usersModels";
+import type {UserModel} from "@/modules/users/models/usersModels";
 
 export const usersRepository = {
     async create(data: UserModel): Promise<string> {

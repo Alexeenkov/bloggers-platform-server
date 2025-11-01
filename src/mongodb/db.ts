@@ -1,8 +1,8 @@
 import type {Collection, Db} from "mongodb";
 import {MongoClient} from "mongodb";
-import type {BlogModel} from "../modules/blogs/models/blogsModels";
-import type {PostModel} from "../modules/posts/models/postsModels";
-import type {UserModel} from "../modules/users/models/usersModels";
+import type {BlogModel} from "@/modules/blogs/models/blogsModels";
+import type {PostModel} from "@/modules/posts/models/postsModels";
+import type {UserModel} from "@/modules/users/models/usersModels";
 
 let client: MongoClient | null = null;
 let database: Db | null = null;

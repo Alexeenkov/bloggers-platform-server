@@ -1,4 +1,4 @@
-import {TypeHttpStatus} from "../constants/httpStatuses";
+import {TypeHttpStatus} from "@/shared/constants/httpStatuses";
 
 export class CustomError extends Error {
     public statusCode: TypeHttpStatus;

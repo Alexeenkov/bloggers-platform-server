@@ -1,1 +1,38 @@
-// @ts-ignoreimport request from 'supertest';import {HTTP_STATUSES, TypeHttpStatus} from "../../../src/shared/constants/httpStatuses";import {generateBasicAuthToken} from "../generateBasicAuthToken";import {Express} from "express";import {USERS_ROUTER_PATH} from "../../../src/shared/constants/routersPaths";import {UserInputDataModel} from "../../../src/modules/users/models/usersModels";const adminToken = generateBasicAuthToken();export const usersTestManager = (app: Express) => {    return {        getAllUsers: async () => {            return await request(app)                .get(USERS_ROUTER_PATH)                .set('Authorization', adminToken)                .expect(HTTP_STATUSES.OK);        },        createNewUser: async (            data: UserInputDataModel,            expectedHttpStatus: TypeHttpStatus,        ) => {            return await request(app)                .post(USERS_ROUTER_PATH)                .set('Authorization', adminToken)                .send(data)                .expect(expectedHttpStatus);        },        deleteUser: async (id: string) => {            return await request(app)                .delete(`${USERS_ROUTER_PATH}/${id}`)                .set('Authorization', adminToken)                .expect(HTTP_STATUSES.NO_CONTENT);        },    };};
+// @ts-ignore
+import request from 'supertest';
+import {HTTP_STATUSES, TypeHttpStatus} from "@/shared/constants/httpStatuses";
+import {generateBasicAuthToken} from "../generateBasicAuthToken";
+import {Express} from "express";
+import {USERS_ROUTER_PATH} from "@/shared/constants/routersPaths";
+import {UserInputDataModel} from "@/modules/users/models/usersModels";
+
+const adminToken = generateBasicAuthToken();
+
+export const usersTestManager = (app: Express) => {
+    return {
+        getAllUsers: async () => {
+            return await request(app)
+                .get(USERS_ROUTER_PATH)
+                .set('Authorization', adminToken)
+                .expect(HTTP_STATUSES.OK);
+        },
+
+        createNewUser: async (
+            data: UserInputDataModel,
+            expectedHttpStatus: TypeHttpStatus,
+        ) => {
+            return await request(app)
+                .post(USERS_ROUTER_PATH)
+                .set('Authorization', adminToken)
+                .send(data)
+                .expect(expectedHttpStatus);
+        },
+
+        deleteUser: async (id: string) => {
+            return await request(app)
+                .delete(`${USERS_ROUTER_PATH}/${id}`)
+                .set('Authorization', adminToken)
+                .expect(HTTP_STATUSES.NO_CONTENT);
+        },
+    };
+};

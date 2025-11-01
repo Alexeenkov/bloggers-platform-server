@@ -1,6 +1,6 @@
-import {db} from "../../../mongodb/db";
+import {db} from "@/mongodb/db";
 import type {WithId} from "mongodb";
-import type {UserModel} from "../../users/models/usersModels";
+import type {UserModel} from "@/modules/users/models/usersModels";
 
 export const authRepository = {
     async getUserPasswordByLoginOrEmail(loginOrEmail: string): Promise<WithId<UserModel> | null> {

@@ -1,1 +1,34 @@
-import {query, ValidationChain} from "express-validator";import {    DEFAULT_PAGE_NUMBER,    DEFAULT_PAGE_SIZE,    DEFAULT_SORT_BY,    DEFAULT_SORT_DIRECTION,} from "../../constants/paginationAndSorting";import {SORT_DIRECTION} from "../../constants/sortDirection";export const paginationAndSortingMiddleware: ValidationChain[] = [    query('pageNumber')        .optional()        .default(DEFAULT_PAGE_NUMBER)        .isInt({ min: 1 }).withMessage('Page number must be a positive integer')        .toInt(),    query('pageSize')        .optional()        .default(DEFAULT_PAGE_SIZE)        .isInt({ min: 1, max: 100 })        .withMessage('Page size must be between 1 and 100')        .toInt(),    query('sortBy')        .optional()        .default(DEFAULT_SORT_BY),    query('sortDirection')        .optional()        .default(DEFAULT_SORT_DIRECTION)        .isIn(Object.values(SORT_DIRECTION)).withMessage(            `Sort direction must be one of: ${Object.values(SORT_DIRECTION).join(', ')}`,        ),];
+import {query, ValidationChain} from "express-validator";
+import {
+    DEFAULT_PAGE_NUMBER,
+    DEFAULT_PAGE_SIZE,
+    DEFAULT_SORT_BY,
+    DEFAULT_SORT_DIRECTION,
+} from "@/shared/constants/paginationAndSorting";
+import {SORT_DIRECTION} from "@/shared/constants/sortDirection";
+
+export const paginationAndSortingMiddleware: ValidationChain[] = [
+    query('pageNumber')
+        .optional()
+        .default(DEFAULT_PAGE_NUMBER)
+        .isInt({ min: 1 }).withMessage('Page number must be a positive integer')
+        .toInt(),
+
+    query('pageSize')
+        .optional()
+        .default(DEFAULT_PAGE_SIZE)
+        .isInt({ min: 1, max: 100 })
+        .withMessage('Page size must be between 1 and 100')
+        .toInt(),
+
+    query('sortBy')
+        .optional()
+        .default(DEFAULT_SORT_BY),
+
+    query('sortDirection')
+        .optional()
+        .default(DEFAULT_SORT_DIRECTION)
+        .isIn(Object.values(SORT_DIRECTION)).withMessage(
+            `Sort direction must be one of: ${Object.values(SORT_DIRECTION).join(', ')}`,
+        ),
+];

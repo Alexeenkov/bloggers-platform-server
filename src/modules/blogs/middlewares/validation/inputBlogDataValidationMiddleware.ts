@@ -1,5 +1,5 @@
 import {body, ValidationChain} from 'express-validator';
-import {REGEXPS} from "../../../../shared/constants/regexps";
+import {REGEXPS} from "@/shared/constants/regexps";
 
 const nameValidation =
     body('name')

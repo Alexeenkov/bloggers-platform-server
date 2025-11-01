@@ -1,12 +1,12 @@
-import {db} from "../../../mongodb/db";
+import {db} from "@/mongodb/db";
 import {Filter, ObjectId, WithId} from "mongodb";
-import {mappingUser} from "../features/mappingUser";
+import {mappingUser} from "@/modules/users/features/mappingUser";
 import type {
     UserModel,
     UserOutputDataModel,
     UsersOutputWithPaginationModel,
     UsersQueryModel,
-} from "../models/usersModels";
+} from "@/modules/users/models/usersModels";
 
 export const usersQueryRepository = {
     async findMany(queryParams: UsersQueryModel): Promise<UsersOutputWithPaginationModel> {

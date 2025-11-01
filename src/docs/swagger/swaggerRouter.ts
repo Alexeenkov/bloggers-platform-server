@@ -1,6 +1,6 @@
 import {Request, Response, Router} from 'express';
 import path from "path";
-import {HTTP_STATUSES} from "../../shared/constants/httpStatuses";
+import {HTTP_STATUSES} from "@/shared/constants/httpStatuses";
 
 export const getSwaggerRouter = () => {
   const router = Router({});

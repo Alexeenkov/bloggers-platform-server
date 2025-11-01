@@ -1,1 +1,19 @@
-import type {IdPathParamsModel, RequestWithPathParamsModel} from "../../../../shared/models";import {Response} from "express";import {HTTP_STATUSES} from "../../../../shared/constants/httpStatuses";import {usersService} from "../../application/usersService";export const deleteUserHandler = async (    req: RequestWithPathParamsModel<IdPathParamsModel>,    res: Response,) => {    const isDeleted: boolean = await usersService.delete(req.params.id);    if (!isDeleted) {        res.sendStatus(HTTP_STATUSES.NOT_FOUND);        return;    }    res.sendStatus(HTTP_STATUSES.NO_CONTENT);};
+import type {IdPathParamsModel, RequestWithPathParamsModel} from "@/shared/models";
+import {Response} from "express";
+import {HTTP_STATUSES} from "@/shared/constants/httpStatuses";
+import {usersService} from "@/modules/users/application/usersService";
+
+export const deleteUserHandler = async (
+    req: RequestWithPathParamsModel<IdPathParamsModel>,
+    res: Response,
+) => {
+    const isDeleted: boolean = await usersService.delete(req.params.id);
+
+    if (!isDeleted) {
+        res.sendStatus(HTTP_STATUSES.NOT_FOUND);
+
+        return;
+    }
+
+    res.sendStatus(HTTP_STATUSES.NO_CONTENT);
+};

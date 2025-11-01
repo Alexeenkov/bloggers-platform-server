@@ -1,1 +1,11 @@
-import type {WithId} from "mongodb";import type {UserModel, UserOutputDataModel} from "../models/usersModels";export const mappingUser = (user: WithId<UserModel>): UserOutputDataModel => {    return {        id: user._id.toString(),        login: user.login,        email: user.email,        createdAt: user.createdAt,    }};
+import type {WithId} from "mongodb";
+import type {UserModel, UserOutputDataModel} from "@/modules/users/models/usersModels";
+
+export const mappingUser = (user: WithId<UserModel>): UserOutputDataModel => {
+    return {
+        id: user._id.toString(),
+        login: user.login,
+        email: user.email,
+        createdAt: user.createdAt,
+    }
+};

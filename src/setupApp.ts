@@ -1,1 +1,41 @@
-import express, {Express, Request, Response} from 'express';import {HTTP_STATUSES} from "./shared/constants/httpStatuses";import {getPostsRouter} from "./modules/posts/router/postsRouter";import {getBlogsRouter} from "./modules/blogs/router/blogsRouter";import {getTestingRouter} from "./testing/router/testingRouter";import {TESTING_ROUTER_PATH} from "./testing/constants/testingRouterPath";import {getSwaggerRouter} from "./docs/swagger/swaggerRouter";import {    API_ROUTER_PATH,    AUTH_ROUTER_PATH,    BLOGS_ROUTER_PATH,    POSTS_ROUTER_PATH,    USERS_ROUTER_PATH} from "./shared/constants/routersPaths";import {getUsersRouter} from "./modules/users/router/usersRouter";import {customErrorMiddleware} from "./shared/middlewares/customError/customErrorMiddleware";import cors from 'cors';import {getAuthRouter} from "./modules/auth/router/authRouter";export const setupApp = (app: Express): Express => {    app.use(cors({        origin: '*',    }));    app.use(express.json());    app.get('/', (_: Request, res: Response) => {        res.status(HTTP_STATUSES.OK).send('Bloggers platform server');    });    // TODO: Удалить ненужную обёртку обработчика чтоб избавиться от ненужного вызова    //  и лишнего кода    app.use(BLOGS_ROUTER_PATH, getBlogsRouter());    app.use(POSTS_ROUTER_PATH, getPostsRouter());    app.use(USERS_ROUTER_PATH, getUsersRouter());    app.use(AUTH_ROUTER_PATH, getAuthRouter());    app.use(API_ROUTER_PATH, getSwaggerRouter());    app.use(TESTING_ROUTER_PATH, getTestingRouter());    app.use(customErrorMiddleware);    return app;}
+import express, {Express, Request, Response} from 'express';
+import {HTTP_STATUSES} from "@/shared/constants/httpStatuses";
+import {getPostsRouter} from "@/modules/posts/router/postsRouter";
+import {getBlogsRouter} from "@/modules/blogs/router/blogsRouter";
+import {getTestingRouter} from "@/testing/router/testingRouter";
+import {TESTING_ROUTER_PATH} from "@/testing/constants/testingRouterPath";
+import {getSwaggerRouter} from "@/docs/swagger/swaggerRouter";
+import {
+    API_ROUTER_PATH,
+    AUTH_ROUTER_PATH,
+    BLOGS_ROUTER_PATH,
+    POSTS_ROUTER_PATH,
+    USERS_ROUTER_PATH
+} from "@/shared/constants/routersPaths";
+import {getUsersRouter} from "@/modules/users/router/usersRouter";
+import {customErrorMiddleware} from "@/shared/middlewares/customError/customErrorMiddleware";
+import cors from 'cors';
+import {getAuthRouter} from "@/modules/auth/router/authRouter";
+
+export const setupApp = (app: Express): Express => {
+    app.use(cors({
+        origin: '*',
+    }));
+    app.use(express.json());
+
+    app.get('/', (_: Request, res: Response) => {
+        res.status(HTTP_STATUSES.OK).send('Bloggers platform server');
+    });
+
+    // TODO: Удалить ненужную обёртку обработчика чтоб избавиться от ненужного вызова
+    //  и лишнего кода
+    app.use(BLOGS_ROUTER_PATH, getBlogsRouter());
+    app.use(POSTS_ROUTER_PATH, getPostsRouter());
+    app.use(USERS_ROUTER_PATH, getUsersRouter());
+    app.use(AUTH_ROUTER_PATH, getAuthRouter());
+    app.use(API_ROUTER_PATH, getSwaggerRouter());
+    app.use(TESTING_ROUTER_PATH, getTestingRouter());
+    app.use(customErrorMiddleware);
+
+    return app;
+}

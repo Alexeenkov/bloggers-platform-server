@@ -1,9 +1,9 @@
 import {Response} from "express";
-import type {IdPathParamsModel, RequestWithPathParamsAndBodyModel} from "../../../../shared/models";
-import {HTTP_STATUSES} from "../../../../shared/constants/httpStatuses";
-import type {PostInputDataForBlogModel, PostModel} from "../../../posts/models/postsModels";
-import {postsService} from "../../../posts/application/postsService";
-import {postsQueryRepository} from "../../../posts/repository/postsQueryRepository";
+import type {IdPathParamsModel, RequestWithPathParamsAndBodyModel} from "@/shared/models";
+import {HTTP_STATUSES} from "@/shared/constants/httpStatuses";
+import type {PostInputDataForBlogModel, PostModel} from "@/modules/posts/models/postsModels";
+import {postsService} from "@/modules/posts/application/postsService";
+import {postsQueryRepository} from "@/modules/posts/repository/postsQueryRepository";
 
 export const createPostForSpecificBlogHandler = async (
     req: RequestWithPathParamsAndBodyModel<IdPathParamsModel, PostInputDataForBlogModel>,

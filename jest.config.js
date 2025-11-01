@@ -2,7 +2,10 @@
 module.exports = {
   testEnvironment: "node",
   transform: {
-    "^.+\.tsx?$": ["ts-jest",{}],
+    "^.+\.tsx?$": ["ts-jest", {}],
   },
   testRegex: ".api.test.ts$",
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
+  },
 };

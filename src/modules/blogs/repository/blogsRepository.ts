@@ -1,5 +1,5 @@
-import type {BlogInputDataModel, BlogModel} from "../models/blogsModels";
-import {db} from "../../../mongodb/db";
+import type {BlogInputDataModel, BlogModel} from "@/modules/blogs/models/blogsModels";
+import {db} from "@/mongodb/db";
 import type {InsertOneResult} from "mongodb";
 import {ObjectId} from "mongodb";
 
