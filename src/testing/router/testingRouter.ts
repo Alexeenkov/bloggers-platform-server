@@ -1,6 +1,6 @@
 import {Request, Response, Router} from "express";
-import {HTTP_STATUSES} from "@/shared/constants/httpStatuses";
-import {db} from "@/mongodb/db";
+import {HTTP_STATUSES} from "../../shared/constants/httpStatuses";
+import {db} from "../../mongodb/db";
 
 export const getTestingRouter = () => {
     const router = Router({});

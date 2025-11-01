@@ -3,11 +3,11 @@ import type {
     BlogOutputDataModel,
     BlogQueryModel,
     BlogsOutputWithPaginationModel,
-} from "@/modules/blogs/models/blogsModels";
-import {db} from "@/mongodb/db";
+} from "../models/blogsModels";
+import {db} from "../../../mongodb/db";
 import type {Filter, WithId} from "mongodb";
 import {ObjectId} from "mongodb";
-import {mappingBlog} from "@/modules/blogs/features/mappingBlog";
+import {mappingBlog} from "../features/mappingBlog";
 
 export const blogsQueryRepository = {
     async findMany(queryParams: BlogQueryModel): Promise<BlogsOutputWithPaginationModel> {

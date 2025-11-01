@@ -1,7 +1,7 @@
-import type {IdPathParamsModel, RequestWithPathParamsModel} from "@/shared/models";
+import type {IdPathParamsModel, RequestWithPathParamsModel} from "../../../../shared/models";
 import {Response} from "express";
-import {HTTP_STATUSES} from "@/shared/constants/httpStatuses";
-import {postsService} from "@/modules/posts/application/postsService";
+import {HTTP_STATUSES} from "../../../../shared/constants/httpStatuses";
+import {postsService} from "../../application/postsService";
 
 export const deletePostHandler = async (
     req: RequestWithPathParamsModel<IdPathParamsModel>,

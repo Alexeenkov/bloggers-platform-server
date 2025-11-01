@@ -1,19 +1,1 @@
-import type {IdPathParamsModel, RequestWithPathParamsModel} from "@/shared/models";
-import {Response} from "express";
-import {HTTP_STATUSES} from "@/shared/constants/httpStatuses";
-import {blogsService} from "@/modules/blogs/application/blogsService";
-
-export const deleteBlogHandler = async (
-    req: RequestWithPathParamsModel<IdPathParamsModel>,
-    res: Response,
-) => {
-    const isDeleted = await blogsService.delete(req.params.id);
-
-    if (!isDeleted) {
-        res.sendStatus(HTTP_STATUSES.NOT_FOUND);
-
-        return;
-    }
-
-    res.sendStatus(HTTP_STATUSES.NO_CONTENT);
-};
+import type {IdPathParamsModel, RequestWithPathParamsModel} from "../../../../shared/models";import {Response} from "express";import {HTTP_STATUSES} from "../../../../shared/constants/httpStatuses";import {blogsService} from "../../application/blogsService";export const deleteBlogHandler = async (    req: RequestWithPathParamsModel<IdPathParamsModel>,    res: Response,) => {    const isDeleted = await blogsService.delete(req.params.id);    if (!isDeleted) {        res.sendStatus(HTTP_STATUSES.NOT_FOUND);        return;    }    res.sendStatus(HTTP_STATUSES.NO_CONTENT);};

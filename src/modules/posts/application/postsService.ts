@@ -1,9 +1,9 @@
-import type {PostInputDataModel, PostModel} from "@/modules/posts/models/postsModels";
-import {createDateISO} from "@/shared/utils/createDateISO";
-import {postsRepository} from "@/modules/posts/repository/postsRepository";
-import {blogsQueryRepository} from "@/modules/blogs/repository/blogsQueryRepository";
-import {CustomError} from "@/shared/utils/CustomError";
-import {HTTP_STATUSES} from "@/shared/constants/httpStatuses";
+import type {PostInputDataModel, PostModel} from "../models/postsModels";
+import {createDateISO} from "../../../shared/utils/createDateISO";
+import {postsRepository} from "../repository/postsRepository";
+import {blogsQueryRepository} from "../../blogs/repository/blogsQueryRepository";
+import {CustomError} from "../../../shared/utils/CustomError";
+import {HTTP_STATUSES} from "../../../shared/constants/httpStatuses";
 
 export const postsService = {
     async create(data: PostInputDataModel): Promise<string> {

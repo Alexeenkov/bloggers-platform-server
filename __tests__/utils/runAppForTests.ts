@@ -1,31 +1,1 @@
-// @ts-ignore
-import express, {Express} from "express";
-// @ts-ignore
-import request from "supertest";
-import {setupApp} from "@/setupApp";
-import {runDb, stopDb} from "@/mongodb/db";
-import {TESTING_ROUTER_PATH} from "@/testing/constants/testingRouterPath";
-import {HTTP_STATUSES} from "@/shared/constants/httpStatuses";
-
-const clearDb = async (app: Express) => {
-    await request(app)
-        .delete(`${TESTING_ROUTER_PATH}/all-data`)
-        .expect(HTTP_STATUSES.NO_CONTENT);
-
-    return;
-}
-
-export const runAppForTests = () => {
-     const app = express();
-     setupApp(app);
-
-     beforeAll(async () => {
-         await runDb('mongodb://localhost:27017/db-test');
-         await clearDb(app);
-     });
-     afterAll(async () => {
-         await stopDb();
-     });
-
-     return app;
- };
+// @ts-ignoreimport express, {Express} from "express";// @ts-ignoreimport request from "supertest";import {setupApp} from "../../src/setupApp";import {runDb, stopDb} from "../../src/mongodb/db";import {TESTING_ROUTER_PATH} from "../../src/testing/constants/testingRouterPath";import {HTTP_STATUSES} from "../../src/shared/constants/httpStatuses";const clearDb = async (app: Express) => {    await request(app)        .delete(`${TESTING_ROUTER_PATH}/all-data`)        .expect(HTTP_STATUSES.NO_CONTENT);    return;}export const runAppForTests = () => {     const app = express();     setupApp(app);     beforeAll(async () => {         await runDb('mongodb://localhost:27017/db-test');         await clearDb(app);     });     afterAll(async () => {         await stopDb();     });     return app; };

@@ -1,55 +1,1 @@
-import {Router} from "express";
-import {
-    createPostHandler,
-    deletePostHandler,
-    getPostHandler,
-    getPostsListHandler,
-    updatePostHandler,
-} from "./handlers";
-import {
-    idValidationMiddleware,
-    paginationAndSortingMiddleware,
-    resultValidationMiddleware
-} from "@/shared/middlewares/validation";
-import {inputPostDataValidationMiddleware} from "@/modules/posts/middlewares/validation/inputPostDataValidationMiddleware";
-import {basicAuthGuardMiddleware} from "@/shared/middlewares/auth/basicAuthGuardMiddleware";
-
-export const getPostsRouter = () => {
-    const router = Router({});
-
-    router.get('/',
-        paginationAndSortingMiddleware,
-        resultValidationMiddleware,
-        getPostsListHandler,
-    );
-
-    router.post('/',
-        basicAuthGuardMiddleware,
-        inputPostDataValidationMiddleware,
-        resultValidationMiddleware,
-        createPostHandler,
-    );
-
-    router.get('/:id',
-        idValidationMiddleware,
-        resultValidationMiddleware,
-        getPostHandler,
-    );
-
-    router.put('/:id',
-        basicAuthGuardMiddleware,
-        idValidationMiddleware,
-        inputPostDataValidationMiddleware,
-        resultValidationMiddleware,
-        updatePostHandler,
-    );
-
-    router.delete('/:id',
-        basicAuthGuardMiddleware,
-        idValidationMiddleware,
-        resultValidationMiddleware,
-        deletePostHandler,
-    );
-
-    return router;
-};
+import {Router} from "express";import {    createPostHandler,    deletePostHandler,    getPostHandler,    getPostsListHandler,    updatePostHandler,} from "./handlers";import {    idValidationMiddleware,    paginationAndSortingMiddleware,    resultValidationMiddleware} from "../../../shared/middlewares/validation";import {inputPostDataValidationMiddleware} from "../middlewares/validation/inputPostDataValidationMiddleware";import {basicAuthGuardMiddleware} from "../../../shared/middlewares/auth/basicAuthGuardMiddleware";export const getPostsRouter = () => {    const router = Router({});    router.get('/',        paginationAndSortingMiddleware,        resultValidationMiddleware,        getPostsListHandler,    );    router.post('/',        basicAuthGuardMiddleware,        inputPostDataValidationMiddleware,        resultValidationMiddleware,        createPostHandler,    );    router.get('/:id',        idValidationMiddleware,        resultValidationMiddleware,        getPostHandler,    );    router.put('/:id',        basicAuthGuardMiddleware,        idValidationMiddleware,        inputPostDataValidationMiddleware,        resultValidationMiddleware,        updatePostHandler,    );    router.delete('/:id',        basicAuthGuardMiddleware,        idValidationMiddleware,        resultValidationMiddleware,        deletePostHandler,    );    return router;};

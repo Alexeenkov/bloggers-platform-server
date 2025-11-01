@@ -1,38 +1,1 @@
-import {Response} from "express";
-import {HTTP_STATUSES} from "@/shared/constants/httpStatuses";
-import type {
-    PostInputQueryModel,
-    PostQueryModel,
-    PostsOutputWithPaginationModel,
-} from "@/modules/posts/models/postsModels";
-import type {
-    IdPathParamsModel,
-    RequestWithPathAndQueryParamsModel,
-} from "@/shared/models";
-import {withDefaultQueryParams} from "@/modules/posts/features/withDefaultQueryParams";
-import {blogsQueryRepository} from "@/modules/blogs/repository/blogsQueryRepository";
-import {postsQueryRepository} from "@/modules/posts/repository/postsQueryRepository";
-
-export const getPostsListForSpecificBlogHandler = async (
-    req: RequestWithPathAndQueryParamsModel<IdPathParamsModel, PostInputQueryModel>,
-    res: Response<PostsOutputWithPaginationModel>
-) => {
-    const blog = await blogsQueryRepository.findBlogName(req.params.id);
-
-    if (!blog) {
-        res.sendStatus(HTTP_STATUSES.NOT_FOUND);
-
-        return;
-    }
-
-    const queryParams: PostQueryModel = withDefaultQueryParams(req.query);
-
-    const postsList: PostsOutputWithPaginationModel = await postsQueryRepository.findMany(
-        queryParams,
-        req.params.id,
-    );
-
-    res
-        .status(HTTP_STATUSES.OK)
-        .json(postsList);
-};
+import {Response} from "express";import {HTTP_STATUSES} from "../../../../shared/constants/httpStatuses";import type {    PostInputQueryModel,    PostQueryModel,    PostsOutputWithPaginationModel,} from "../../../posts/models/postsModels";import type {    IdPathParamsModel,    RequestWithPathAndQueryParamsModel,} from "../../../../shared/models";import {withDefaultQueryParams} from "../../../posts/features/withDefaultQueryParams";import {blogsQueryRepository} from "../../repository/blogsQueryRepository";import {postsQueryRepository} from "../../../posts/repository/postsQueryRepository";export const getPostsListForSpecificBlogHandler = async (    req: RequestWithPathAndQueryParamsModel<IdPathParamsModel, PostInputQueryModel>,    res: Response<PostsOutputWithPaginationModel>) => {    const blog = await blogsQueryRepository.findBlogName(req.params.id);    if (!blog) {        res.sendStatus(HTTP_STATUSES.NOT_FOUND);        return;    }    const queryParams: PostQueryModel = withDefaultQueryParams(req.query);    const postsList: PostsOutputWithPaginationModel = await postsQueryRepository.findMany(        queryParams,        req.params.id,    );    res        .status(HTTP_STATUSES.OK)        .json(postsList);};

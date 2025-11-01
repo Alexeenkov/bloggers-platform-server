@@ -5,9 +5,8 @@
   "license": "MIT",
   "scripts": {
     "copy-swagger": "yarn copyfiles -u 1 src/docs/swagger/index.html dist/ && yarn copyfiles -u 1 src/docs/swagger/specSwagger.js dist/",
-    "build": "yarn tsc && yarn tsc-alias && yarn copy-swagger",
-    "watch": "yarn tsc -w",
-    "dev": "yarn concurrently -k -n \"TSC,APP\" -c \"cyan,green\" \"yarn watch\" \"yarn nodemon --inspect ./dist/index.js\"",
+    "watch": "yarn copy-swagger && yarn tsc -w",
+    "dev": "yarn nodemon --inspect ./dist/index.js",
     "test": "jest --detectOpenHandles --no-cache"
   },
   "dependencies": {
@@ -15,7 +14,6 @@
     "cors": "2.8.5",
     "express": "5.1.0",
     "express-validator": "7.2.1",
-    "module-alias": "^2.2.3",
     "mongodb": "6.16.0",
     "swagger-jsdoc": "6.2.8",
     "swagger-ui-express": "5.0.1"
@@ -29,7 +27,6 @@
     "@types/supertest": "6.0.3",
     "@types/swagger-jsdoc": "6.0.4",
     "@types/swagger-ui-express": "4.1.8",
-    "concurrently": "^9.2.1",
     "copyfiles": "2.4.1",
     "dotenv": "16.5.0",
     "jest": "29.7.0",
@@ -39,11 +36,7 @@
     "ts-jest": "29.3.2",
     "ts-node": "10.9.2",
     "tsc": "2.0.4",
-    "tsc-alias": "^1.8.16",
     "typescript": "5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
-  "_moduleAliases": {
-    "@": "dist"
-  }
+  "packageManager": "yarn@1.22.22"
 }

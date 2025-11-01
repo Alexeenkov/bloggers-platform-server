@@ -3,11 +3,11 @@ import {
     PostOutputDataModel,
     PostQueryModel,
     PostsOutputWithPaginationModel
-} from "@/modules/posts/models/postsModels";
-import {db} from "@/mongodb/db";
+} from "../models/postsModels";
+import {db} from "../../../mongodb/db";
 import type {Filter, WithId} from "mongodb";
 import {ObjectId} from "mongodb";
-import {mappingPost} from "@/modules/posts/features/mappingPost";
+import {mappingPost} from "../features/mappingPost";
 
 export const postsQueryRepository = {
     async findMany(queryParams: PostQueryModel, blogId?: string): Promise<PostsOutputWithPaginationModel> {

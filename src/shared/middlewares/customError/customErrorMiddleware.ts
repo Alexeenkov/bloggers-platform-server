@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from "express";
-import {CustomError} from "@/shared/utils/CustomError";
-import {ErrorMessagesModel} from "@/shared/models";
-import {HTTP_STATUSES} from "@/shared/constants/httpStatuses";
+import {CustomError} from "../../utils/CustomError";
+import {ErrorMessagesModel} from "../../models";
+import {HTTP_STATUSES} from "../../constants/httpStatuses";
 
 export const customErrorMiddleware = (
     err: Error,

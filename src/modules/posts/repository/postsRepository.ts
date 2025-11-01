@@ -1,5 +1,5 @@
-import {PostInputDataWithBlogNameModel, PostModel} from "@/modules/posts/models/postsModels";
-import {db} from "@/mongodb/db";
+import {PostInputDataWithBlogNameModel, PostModel} from "../models/postsModels";
+import {db} from "../../../mongodb/db";
 import type {InsertOneResult, UpdateResult} from "mongodb";
 import {ObjectId} from "mongodb";
 
