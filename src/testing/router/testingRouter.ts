@@ -1,1 +1,19 @@
-import {Request, Response, Router} from "express";import {HTTP_STATUSES} from "../../shared/constants/httpStatuses";import {blogsCollection, postsCollection, usersCollection} from "../../mongodb/db";export const getTestingRouter = () => {    const router = Router({});    router.delete('/all-data', async (_: Request, res: Response) => {        await Promise.all([            blogsCollection.deleteMany(),            postsCollection.deleteMany(),            usersCollection.deleteMany(),        ]);        res.sendStatus(HTTP_STATUSES.NO_CONTENT);    });    return router;}
+import {Request, Response, Router} from "express";
+import {HTTP_STATUSES} from "../../shared/constants/httpStatuses";
+import {db} from "../../mongodb/db";
+
+export const getTestingRouter = () => {
+    const router = Router({});
+
+    router.delete('/all-data', async (_: Request, res: Response) => {
+        await Promise.all([
+            db.blogs.deleteMany(),
+            db.posts.deleteMany(),
+            db.users.deleteMany(),
+        ]);
+
+        res.sendStatus(HTTP_STATUSES.NO_CONTENT);
+    });
+
+    return router;
+}
