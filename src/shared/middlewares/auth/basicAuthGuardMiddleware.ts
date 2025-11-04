@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import {NextFunction, Request, Response} from 'express';
 import {HTTP_STATUSES} from "../../constants/httpStatuses";
 
 export const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
