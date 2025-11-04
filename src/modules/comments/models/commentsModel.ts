@@ -44,10 +44,9 @@ export interface CommentsOutputWithPaginationModel {
     items: CommentOutputDataModel[]
 }
 
-// Модель для хранения комментария в MongoDB
 export interface CommentDBModel {
-    _id: string; // id комментария
-    postId: string; // id поста
+    _id: string;
+    postId: string;
     content: string;
     commentatorInfo: CommentatorInfoModel;
     createdAt: ISO8601StringModel;
