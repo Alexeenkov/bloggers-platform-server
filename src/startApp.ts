@@ -1,1 +1,15 @@
-import {Express} from "express";import {runDb} from "./mongodb/db";import * as dotenv from "dotenv";dotenv.config();const PORT = process.env.PORT || 3003;const mongoUri = process.env.MONGO_URL;if (!mongoUri) throw new Error('process.env.MONGO_URL does`t found');export const startApp = async (app: Express) => {    await runDb(mongoUri);    app.listen(PORT, () => {        console.log(`listening port: ${PORT}`);    });};
+import {Express} from "express";
+import {runDb} from "./mongodb/db";
+import {appConfig} from "./shared/appConfig";
+
+export const startApp = async (app: Express) => {
+    if (Object.values(appConfig).some((key) => key === undefined)) {
+        throw new Error('Environment variables are not set');
+    }
+
+    await runDb(appConfig.mongoUri!);
+
+    app.listen(appConfig.port, () => {
+        console.log(`listening port: ${appConfig.port}`);
+    });
+};

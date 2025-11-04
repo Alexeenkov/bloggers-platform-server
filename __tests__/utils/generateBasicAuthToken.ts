@@ -1,7 +1,7 @@
-import {ADMIN_PASSWORD, ADMIN_USERNAME} from "../../src/shared/middlewares/auth/basicAuthGuardMiddleware";
+import {appConfig} from "../../src/shared/appConfig";
 
 export function generateBasicAuthToken() {
-  const credentials = `${ADMIN_USERNAME}:${ADMIN_PASSWORD}`;
+  const credentials = `${appConfig.adminUsername}:${appConfig.adminPassword}`;
   const token = Buffer.from(credentials).toString('base64');
   return `Basic ${token}`;
 }
