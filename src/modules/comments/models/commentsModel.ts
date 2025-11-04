@@ -45,7 +45,6 @@ export interface CommentsOutputWithPaginationModel {
 }
 
 export interface CommentDBModel {
-    _id: string;
     postId: string;
     content: string;
     commentatorInfo: CommentatorInfoModel;

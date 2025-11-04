@@ -5,11 +5,11 @@ import {
     CommentQueryModel,
     CommentsOutputWithPaginationModel
 } from "../models/commentsModel";
-import type {WithId} from "mongodb";
+import {type WithId, ObjectId} from "mongodb";
 import {mappingComment, mappingComments} from "../features/mappingComments";
 
 export const commentsQueryRepository = {
-    async getCommentsList(postId: string, queryParams: CommentQueryModel): Promise<CommentsOutputWithPaginationModel> {
+    async findMany(postId: string, queryParams: CommentQueryModel): Promise<CommentsOutputWithPaginationModel> {
         const {
             pageNumber,
             pageSize,
@@ -39,8 +39,9 @@ export const commentsQueryRepository = {
         };
     },
 
-    async getCommentById(id: string): Promise<CommentOutputDataModel | null> {
-        const comment = await db.comments.findOne({_id: id});
+    async findById(id: string): Promise<CommentOutputDataModel | null> {
+        const _id: ObjectId = new ObjectId(id);
+        const comment: WithId<CommentDBModel> | null = await db.comments.findOne({_id});
 
         if (!comment) return null;
 

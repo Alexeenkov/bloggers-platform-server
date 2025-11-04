@@ -1,29 +1,22 @@
 import {db} from "../../../mongodb/db";
 import {CommentDBModel, CommentOutputDataModel, CommentInputDataModel} from "../models/commentsModel";
-import {ObjectId} from "mongodb";
-import {createDateISO} from "../../../shared/utils/createDateISO";
-import {UpdateResult} from "mongodb";
+import {ObjectId, type InsertOneResult, type UpdateResult} from "mongodb";
 import {mappingComment} from "../features/mappingComments";
 
 export const commentsRepository = {
-    create: async (postId: string, comment: CommentInputDataModel): Promise<CommentOutputDataModel> => {
-        const commentId = new ObjectId().toString();
+    create: async (data: CommentDBModel): Promise<CommentOutputDataModel> => {
+        const result: InsertOneResult<CommentDBModel> = await db.comments.insertOne(data);
 
-        const newComment: CommentDBModel = {
-            _id: commentId,
-            postId,
-            ...comment,
-            createdAt: createDateISO(new Date()),
-        };
-
-        await db.comments.insertOne(newComment);
-
-        return mappingComment(newComment);
+        return mappingComment({
+            ...data,
+            _id: result.insertedId
+        });
     },
 
     update: async (commentId: string, comment: CommentInputDataModel): Promise<boolean> => {
+        const _id: ObjectId = new ObjectId(commentId);
         const result: UpdateResult<CommentDBModel> = await db.comments.updateOne(
-            {_id: commentId},
+            {_id},
             {
                 $set: {
                     content: comment.content,
@@ -36,7 +29,8 @@ export const commentsRepository = {
     },
 
     delete: async (commentId: string): Promise<boolean> => {
-        const result = await db.comments.deleteOne({_id: commentId});
+        const _id: ObjectId = new ObjectId(commentId);
+        const result = await db.comments.deleteOne({_id});
 
         return result.deletedCount === 1;
     },

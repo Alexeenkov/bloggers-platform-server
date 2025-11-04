@@ -5,6 +5,8 @@ import {
     getPostHandler,
     getPostsListHandler,
     updatePostHandler,
+    getCommentsForSpecificPostHandler,
+    createCommentForSpecificPostHandler,
 } from "./handlers";
 import {
     idValidationMiddleware,
@@ -48,4 +50,18 @@ postsRouter.delete('/:id',
     idValidationMiddleware,
     resultValidationMiddleware,
     deletePostHandler,
+);
+
+postsRouter.get('/:id/comments',
+    paginationAndSortingMiddleware,
+    idValidationMiddleware,
+    resultValidationMiddleware,
+    getCommentsForSpecificPostHandler,
+);
+
+postsRouter.post('/:id/comments',
+    basicAuthGuardMiddleware,
+    idValidationMiddleware,
+    resultValidationMiddleware,
+    createCommentForSpecificPostHandler,
 );
