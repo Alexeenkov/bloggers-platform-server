@@ -1,1 +1,12 @@
-import {Router} from "express";import {loginHandler} from "./handlers";import {resultValidationMiddleware} from "../../../shared/middlewares/validation";import {inputAuthDataValidationMiddleware} from "../middlewares/validation/inputAuthDataValidationMiddleware";export const getAuthRouter = () => {    const router = Router({});    router.post('/login',        inputAuthDataValidationMiddleware,        resultValidationMiddleware,        loginHandler,    );    return router;};
+import {Router} from "express";
+import {loginHandler} from "./handlers";
+import {resultValidationMiddleware} from "../../../shared/middlewares/validation";
+import {inputAuthDataValidationMiddleware} from "../middlewares/validation/inputAuthDataValidationMiddleware";
+
+export const authRouter = Router({});
+
+authRouter.post('/login',
+    inputAuthDataValidationMiddleware,
+    resultValidationMiddleware,
+    loginHandler,
+);

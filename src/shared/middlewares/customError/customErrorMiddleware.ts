@@ -1,9 +1,9 @@
-import {NextFunction, Request, Response} from "express";
+import {ErrorRequestHandler, NextFunction, Request, Response} from "express";
 import {CustomError} from "../../utils/CustomError";
 import {ErrorMessagesModel} from "../../models";
 import {HTTP_STATUSES} from "../../constants/httpStatuses";
 
-export const customErrorMiddleware = (
+export const customErrorMiddleware: ErrorRequestHandler = (
     err: Error,
     req: Request,
     res: Response<ErrorMessagesModel>,
