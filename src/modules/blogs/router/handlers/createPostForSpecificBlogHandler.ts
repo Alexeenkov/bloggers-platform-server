@@ -1,20 +1,18 @@
 import {Response} from "express";
 import type {IdPathParamsModel, RequestWithPathParamsAndBodyModel} from "../../../../shared/models";
 import {HTTP_STATUSES} from "../../../../shared/constants/httpStatuses";
-import type {PostInputDataForBlogModel, PostModel} from "../../../posts/models/postsModels";
+import type {PostInputDataForBlogModel} from "../../../posts/models/postsModels";
 import {postsService} from "../../../posts/application/postsService";
-import {postsQueryRepository} from "../../../posts/repository/postsQueryRepository";
+import type {PostOutputDataModel} from "../../../posts/models/postsModels";
 
 export const createPostForSpecificBlogHandler = async (
     req: RequestWithPathParamsAndBodyModel<IdPathParamsModel, PostInputDataForBlogModel>,
-    res: Response<PostModel>,
+    res: Response<PostOutputDataModel>,
 ) => {
-    const insertedId = await postsService.create({
+    const createdPost: PostOutputDataModel = await postsService.create({
         ...req.body,
         blogId: req.params.id,
     });
 
-    const createdPost = await postsQueryRepository.findById(insertedId);
-
-    res.status(HTTP_STATUSES.CREATED).json(<PostModel>createdPost);
+    res.status(HTTP_STATUSES.CREATED).json(createdPost);
 };

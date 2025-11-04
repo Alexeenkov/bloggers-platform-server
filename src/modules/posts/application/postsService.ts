@@ -4,9 +4,10 @@ import {postsRepository} from "../repository/postsRepository";
 import {blogsQueryRepository} from "../../blogs/repository/blogsQueryRepository";
 import {CustomError} from "../../../shared/utils/CustomError";
 import {HTTP_STATUSES} from "../../../shared/constants/httpStatuses";
+import type {PostOutputDataModel} from "../models/postsModels";
 
 export const postsService = {
-    async create(data: PostInputDataModel): Promise<string> {
+    async create(data: PostInputDataModel): Promise<PostOutputDataModel> {
         const blog = await blogsQueryRepository.findBlogName(data.blogId);
 
         if (!blog) {

@@ -2,12 +2,17 @@ import {PostInputDataWithBlogNameModel, PostModel} from "../models/postsModels";
 import {db} from "../../../mongodb/db";
 import type {InsertOneResult, UpdateResult} from "mongodb";
 import {ObjectId} from "mongodb";
+import {mappingPost} from "../features/mappingPost";
+import type {PostOutputDataModel} from "../models/postsModels";
 
 export const postsRepository = {
-    async create(data: PostModel): Promise<string> {
+    async create(data: PostModel): Promise<PostOutputDataModel> {
         const result: InsertOneResult<PostModel> = await db.posts.insertOne(data);
 
-        return result.insertedId.toString();
+        return mappingPost({
+            ...data,
+            _id: result.insertedId
+        });
     },
 
     async update(id: string, data: PostInputDataWithBlogNameModel): Promise<boolean> {
