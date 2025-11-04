@@ -15,6 +15,7 @@ export const commentsRepository = {
 
     update: async (commentId: string, comment: CommentInputDataModel): Promise<boolean> => {
         const _id: ObjectId = new ObjectId(commentId);
+
         const result: UpdateResult<CommentDBModel> = await db.comments.updateOne(
             {_id},
             {

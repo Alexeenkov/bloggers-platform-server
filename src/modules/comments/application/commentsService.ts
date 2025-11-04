@@ -14,11 +14,11 @@ export const commentsService = {
         return await commentsRepository.create(newComment);
     },
 
-    async updateComment(id: string, data: CommentInputDataModel): Promise<boolean> {
+    async update(id: string, data: CommentInputDataModel): Promise<boolean> {
         return await commentsRepository.update(id, data);
     },
 
-    async deleteComment(id: string): Promise<boolean> {
+    async delete(id: string): Promise<boolean> {
         return await commentsRepository.delete(id);
     }
 }
