@@ -3,6 +3,7 @@ import {MongoClient} from "mongodb";
 import type {BlogModel} from "../modules/blogs/models/blogsModels";
 import type {PostModel} from "../modules/posts/models/postsModels";
 import type {UserModel} from "../modules/users/models/usersModels";
+import type {CommentDBModel} from "../modules/comments/models/commentsModel";
 
 let client: MongoClient | null = null;
 let database: Db | null = null;
@@ -18,13 +19,14 @@ export const db = {
     get blogs(): Collection<BlogModel> {
         return getDatabase().collection<BlogModel>('blogs');
     },
-
     get posts(): Collection<PostModel> {
         return getDatabase().collection<PostModel>('posts');
     },
-
     get users(): Collection<UserModel> {
         return getDatabase().collection<UserModel>('users');
+    },
+    get comments(): Collection<CommentDBModel> {
+        return getDatabase().collection<CommentDBModel>('comments');
     },
 };
 
