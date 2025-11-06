@@ -19,7 +19,6 @@ export interface CommentOutputDataModel extends CommentModel {
 
 export interface CommentInputDataModel {
     content: string
-    commentatorInfo: CommentatorInfoModel
 }
 
 export interface CommentInputQueryModel extends ParsedQs {
