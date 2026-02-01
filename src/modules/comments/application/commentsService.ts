@@ -14,7 +14,7 @@ export const commentsService = {
         return await commentsRepository.create(newComment);
     },
 
-    async update(id: string, data: CommentInputDataModel): Promise<boolean> {
+    async update(id: string, data: Omit<CommentModel, 'createdAt'>): Promise<boolean> {
         return await commentsRepository.update(id, data);
     },
 

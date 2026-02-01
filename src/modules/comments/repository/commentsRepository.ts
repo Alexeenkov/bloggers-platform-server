@@ -1,5 +1,5 @@
 import {db} from "../../../mongodb/db";
-import {CommentDBModel, CommentOutputDataModel, CommentInputDataModel} from "../models/commentsModel";
+import {CommentDBModel, CommentOutputDataModel, CommentModel} from "../models/commentsModel";
 import {ObjectId, type InsertOneResult, type UpdateResult} from "mongodb";
 import {mappingComment} from "../features/mappingComments";
 
@@ -13,7 +13,7 @@ export const commentsRepository = {
         });
     },
 
-    update: async (commentId: string, comment: CommentInputDataModel): Promise<boolean> => {
+    update: async (commentId: string, comment: Omit<CommentModel, 'createdAt'>): Promise<boolean> => {
         const _id: ObjectId = new ObjectId(commentId);
 
         const result: UpdateResult<CommentDBModel> = await db.comments.updateOne(
