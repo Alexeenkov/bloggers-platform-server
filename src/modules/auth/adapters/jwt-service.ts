@@ -1,4 +1,4 @@
-import jwt, {JwtPayload} from "jsonwebtoken";
+import jwt, {type JwtPayload} from "jsonwebtoken";
 import {appConfig} from "../../../shared/appConfig";
 
 export const jwtService = {
@@ -6,7 +6,7 @@ export const jwtService = {
         return jwt.sign({userId}, appConfig.jwtSecret, {expiresIn: appConfig.jwtExpiration});
     },
 
-    verifyToken(token: string): JwtPayload | string {
+    verifyToken(token: string): string | JwtPayload {
         return jwt.verify(token, appConfig.jwtSecret);
     },
 }
