@@ -11,6 +11,7 @@ const ui = SwaggerUIBundle({
             {"name": "Blogs"},
             {"name": "Posts"},
             {"name": "Users"},
+            {"name": "Comments"},
         ],
         "paths": {
             "/api/auth/login": {
@@ -635,7 +636,206 @@ const ui = SwaggerUIBundle({
                     }
                 }
             },
-            "/api/users": {
+            "/api/posts/{postId}/comments":
+            {
+                "get": {
+                    "summary": "Возвращает список всех комментариев для конкретного поста",
+                    "tags": ["Posts", "Comments"],
+                    "parameters": [
+                        {
+                            "in": "path",
+                            "name": "postId",
+                            "required": true,
+                            "schema": {
+                                "type": "string",
+                                "example": "6830967285342d045553b95d"
+                            },
+                            "description": "Уникальный идентификатор поста"
+                        },
+                        {
+                            "in": "query",
+                            "name": "pageNumber",
+                            "schema": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 1
+                            },
+                            "description": "Номер страницы с комментариями"
+                        },
+                        {
+                            "in": "query",
+                            "name": "pageSize",
+                            "schema": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 10
+                            },
+                            "description": "Количество комментариев на странице"
+                        }, {
+                            "in": "query",
+                            "name": "sortBy",
+                            "schema": {
+                                "type": "string",
+                                "enum": ["createdAt"],
+                                "default": "createdAt"
+                            },
+                            "description": "По какому свойству осуществлять сортировку"
+                        },
+                        {
+                            "in": "query",
+                            "name": "sortDirection",
+                            "schema": {
+                                "type": "string",
+                                "enum": ["asc", "desc"],
+                                "default": "desc"
+                            },
+                            "description": "Направление сортировки (по возрастанию или убыванию)"
+                        }],
+                    "responses": {
+                        "200": {
+                            "description": "Список всех комментариев для конкретного поста",
+                            "content": {
+                                "application/json": {
+                                    "schema": {"$ref": "#/components/schemas/CommentsListOutputWithPagination"}
+                                }
+                            }
+                        },
+                        "404": {"description": "Такого поста нет по указанному ID"}
+                    }
+                },
+                "post": {
+                    "summary": "Добавляет новый комментарий к конкретному посту",
+                    "tags": ["Posts", "Comments"],
+                    "security": [{"BasicAuth": []}],
+                    "parameters": [{
+                        "in": "path",
+                        "name": "postId",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "6830967285342d045553b95d"
+                        },
+                        "description": "Уникальный идентификатор поста, к которому добавляется комментарий"
+                    }],
+                    "requestBody": {
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {"$ref": "#/components/schemas/CommentInputData"}
+                            }
+                        }
+                    },
+                    "responses": {
+                        "201": {
+                            "description": "Комментарий был успешно создан",
+                            "content": {
+                                "application/json": {
+                                    "schema": {"$ref": "#/components/schemas/CommentOutputData"}
+                                }
+                            }
+                        },
+                        "400": {
+                            "description": "Не прошёл валидацию. В схеме запроса описаны требования к передаваемым данным",
+                            "content": {
+                                "application/json": {
+                                    "schema": {"$ref": "#/components/schemas/ValidationErrorResponse"}
+                                }
+                            }
+                        },
+                        "401": {
+                            "description": "Не прошёл авторизацию"
+                        },
+                        "404": {
+                            "description": "Такого поста нет по указанному ID"
+                        }
+                    }
+                }
+            },
+            "/api/comments/{id}": {
+                "get": {
+                    "summary": "Возвращает информацию о комментарии по ID",
+                    "tags": ["Comments"],
+                    "parameters": [{
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Уникальный идентификатор комментария",
+                        "schema": {
+                            "type": "string",
+                            "example": "6830967285342d045553b95d"
+                        }
+                    }],
+                    "responses": {
+                        "200": {
+                            "description": "Всё ок, вернул запрашиваемый комментарий",
+                            "content": {
+                                "application/json": {
+                                    "schema": {"$ref": "#/components/schemas/CommentOutputData"}
+                                }
+                            }
+                        },
+                        "404": {"description": "Такого комментария нет по указанному ID"}
+                    }
+                }, "put": {
+                    "summary": "Обновляет комментарий по ID",
+                    "tags": ["Comments"],
+                    "security": [{"BasicAuth": []}],
+                    "parameters": [{
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Уникальный идентификатор комментария",
+                        "schema": {
+
+                            "type": "string",
+                            "example": "6830967285342d045553b95d"
+                        }
+                    }],
+                    "requestBody": {
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {"$ref": "#/components/schemas/CommentInputData"}
+                            }
+                        }
+                    },
+                    "responses": {
+                        "204": {
+                            "description": "Комментарий успешно обновлён. Ничего не возвращает"
+                        },
+                        "400": {
+                            "description": "Не прошёл валидацию. В схеме запроса описаны требования к передаваемым данным",
+                            "content": {
+                                "application/json": {
+                                    "schema": {"$ref": "#/components/schemas/ValidationErrorResponse"}
+                                }
+                            }
+                        },
+                        "401": {"description": "Не прошёл авторизацию"},
+                        "403": {"description": "Попытка изменить чужой комментарий"},
+                        "404": {"description": "Такого комментария нет по указанному ID"}
+                    }
+                }, "delete": {
+                    "summary": "Удаляет комментарий по ID",
+                    "tags": ["Comments"],
+                    "security": [{"BasicAuth": []}],
+                    "parameters": [{
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Уникальный идентификатор комментария",
+                        "schema": {
+                            "type": "string",
+                            "example": "6830967285342d045553b95d"
+                        }
+                    }], "responses": {
+                        "204": {"description": "Комментарий успешно удалён. Ничего не возвращает"},
+                        "401": {"description": "Не прошёл авторизацию"},
+                        "403": {"description": "Попытка удалить чужой комментарий"},
+                        "404": {"description": "Такого комментария нет по указанному ID"}
+                    }
+                }
+            }, "/api/users": {
                 "get": {
                     "summary": "Возвращает список всех пользователей",
                     "tags": ["Users"],
@@ -1119,7 +1319,7 @@ const ui = SwaggerUIBundle({
                         },
                     }
                 },
-                "ValidationError": {
+                "CommentatorInfo": {"type": "object", "properties": {"userId": {"type": "string", "example": "6830967285342d045553b95d"}, "userLogin": {"type": "string", "example": "john_doe"}}}, "CommentOutputData": {"type": "object", "properties": {"id": {"type": "string", "description": "Уникальный идентификатор комментария", "example": "6830967285342d045553b95d"}, "content": {"type": "string", "description": "Содержимое комментария", "minLength": 20, "maxLength": 300}, "commentatorInfo": {"$ref": "#/components/schemas/CommentatorInfo"}, "createdAt": {"type": "string", "format": "date-time", "example": "2025-05-22T12:34:04.402Z"}}}, "CommentInputData": {"type": "object", "required": ["content"], "properties": {"content": {"type": "string", "description": "Содержимое комментария", "minLength": 20, "maxLength": 300}}}, "CommentsListOutputWithPagination": {"type": "object", "properties": {"pageNumber": {"type": "integer", "example": 1}, "pageSize": {"type": "integer", "example": 10}, "pageCount": {"type": "integer", "description": "Общее количество страниц", "example": 5}, "totalCount": {"type": "integer", "description": "Общее количество элементов на всех страницах", "example": 100}, "items": {"type": "array", "items": {"$ref": "#/components/schemas/CommentOutputData"}}}}, "ValidationError": {
                     "type": "object",
                     "properties": {
                         "field": {
