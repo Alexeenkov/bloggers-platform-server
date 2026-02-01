@@ -2,14 +2,6 @@ import {Request} from "express";
 import {ParamsDictionary} from 'express-serve-static-core';
 import {ParsedQs} from 'qs';
 
-declare global {
-    namespace Express {
-        interface Request {
-            userId?: string;
-        }
-    }
-}
-
 export interface RequestWithBodyModel<T> extends Request {
     body: T
 }
