@@ -16,6 +16,7 @@ import {
 import {inputPostDataValidationMiddleware} from "../middlewares/validation/inputPostDataValidationMiddleware";
 import {basicAuthGuardMiddleware} from "../../../shared/middlewares/auth/basicAuthGuardMiddleware";
 import {bearerAuthGuard} from "../../../shared/middlewares/auth/bearerAuthGuard";
+import {inputCommentDataValidationMiddleware} from "../../comments/middlewares/validation/inputCommentDataValidationMiddleware";
 
 export const postsRouter = Router({});
 
@@ -63,6 +64,7 @@ postsRouter.get('/:id/comments',
 postsRouter.post('/:id/comments',
     bearerAuthGuard,
     idValidationMiddleware,
+    inputCommentDataValidationMiddleware,
     resultValidationMiddleware,
     createCommentForSpecificPostHandler,
 );

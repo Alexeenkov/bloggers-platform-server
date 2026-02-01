@@ -5,6 +5,7 @@ import {HTTP_STATUSES} from "../../../../shared/constants/httpStatuses";
 import {commentsService} from "../../application/commentsService";
 import {CommentInputDataModel} from "../../models/commentsModel";
 import {usersQueryRepository} from "../../../users/repository/usersQueryRepository";
+import {commentsQueryRepository} from "../../repository/commentsQueryRepository";
 
 export const updateCommentHandler = async (req: RequestWithPathParamsAndBodyModel<IdPathParamsModel, CommentInputDataModel>, res: Response<void>) => {
     const {userId} = req;
@@ -18,6 +19,20 @@ export const updateCommentHandler = async (req: RequestWithPathParamsAndBodyMode
 
     if (!commentatorInfo) {
         res.sendStatus(HTTP_STATUSES.UNAUTHORIZED);
+
+        return;
+    }
+
+    const comment = await commentsQueryRepository.findById(req.params.id);
+
+    if (!comment) {
+        res.sendStatus(HTTP_STATUSES.NOT_FOUND);
+
+        return;
+    }
+
+    if (comment.commentatorInfo.userId !== userId) {
+        res.sendStatus(HTTP_STATUSES.FORBIDDEN);
 
         return;
     }

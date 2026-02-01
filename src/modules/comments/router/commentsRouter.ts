@@ -3,6 +3,7 @@ import {resultValidationMiddleware} from "../../../shared/middlewares/validation
 import {idValidationMiddleware} from "../../../shared/middlewares/validation";
 import {getCommentByIdHandler, updateCommentHandler, deleteCommentHandler} from "./handlers";
 import {bearerAuthGuard} from "../../../shared/middlewares/auth/bearerAuthGuard";
+import {inputCommentDataValidationMiddleware} from "../middlewares/validation/inputCommentDataValidationMiddleware";
 
 export const commentsRouter = Router({});
 
@@ -15,6 +16,7 @@ commentsRouter.get('/:id',
 commentsRouter.put('/:id',
     bearerAuthGuard,
     idValidationMiddleware,
+    inputCommentDataValidationMiddleware,
     resultValidationMiddleware,
     updateCommentHandler,
 );
