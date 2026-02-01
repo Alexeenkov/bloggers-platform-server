@@ -640,7 +640,7 @@ const ui = SwaggerUIBundle({
             {
                 "get": {
                     "summary": "Возвращает список всех комментариев для конкретного поста",
-                    "tags": ["Posts", "Comments"],
+                    "tags": ["Posts"],
                     "parameters": [
                         {
                             "in": "path",
@@ -705,7 +705,7 @@ const ui = SwaggerUIBundle({
                 },
                 "post": {
                     "summary": "Добавляет новый комментарий к конкретному посту",
-                    "tags": ["Posts", "Comments"],
+                    "tags": ["Posts"],
                     "security": [{"BasicAuth": []}],
                     "parameters": [{
                         "in": "path",
@@ -776,7 +776,8 @@ const ui = SwaggerUIBundle({
                         },
                         "404": {"description": "Такого комментария нет по указанному ID"}
                     }
-                }, "put": {
+                },
+                "put": {
                     "summary": "Обновляет комментарий по ID",
                     "tags": ["Comments"],
                     "security": [{"BasicAuth": []}],
@@ -815,7 +816,8 @@ const ui = SwaggerUIBundle({
                         "403": {"description": "Попытка изменить чужой комментарий"},
                         "404": {"description": "Такого комментария нет по указанному ID"}
                     }
-                }, "delete": {
+                },
+                "delete": {
                     "summary": "Удаляет комментарий по ID",
                     "tags": ["Comments"],
                     "security": [{"BasicAuth": []}],
@@ -835,7 +837,8 @@ const ui = SwaggerUIBundle({
                         "404": {"description": "Такого комментария нет по указанному ID"}
                     }
                 }
-            }, "/api/users": {
+            },
+            "/api/users": {
                 "get": {
                     "summary": "Возвращает список всех пользователей",
                     "tags": ["Users"],
