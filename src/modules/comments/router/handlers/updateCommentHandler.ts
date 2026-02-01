@@ -7,7 +7,7 @@ import {CommentInputDataModel} from "../../models/commentsModel";
 import {usersQueryRepository} from "../../../users/repository/usersQueryRepository";
 
 export const updateCommentHandler = async (req: RequestWithPathParamsAndBodyModel<IdPathParamsModel, CommentInputDataModel>, res: Response<void>) => {
-    const {userId} = req.body;
+    const {userId} = req;
 
     if (!userId) {
         res.sendStatus(HTTP_STATUSES.UNAUTHORIZED);

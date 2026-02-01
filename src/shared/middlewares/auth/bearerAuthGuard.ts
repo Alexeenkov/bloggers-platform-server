@@ -34,11 +34,12 @@ export const bearerAuthGuard = (
 
     const {userId} = tokenPayload;
 
-    req.body.userId = userId;
-  } catch {
+    req.userId = userId;
+  } catch (error) {
     res.sendStatus(HTTP_STATUSES.UNAUTHORIZED);
 
     return;
   }
+
   next();
 };

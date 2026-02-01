@@ -10,7 +10,7 @@ export const createCommentForSpecificPostHandler = async (
     req: RequestWithPathParamsAndBodyModel<IdPathParamsModel, CommentInputDataModel>,
     res: Response<CommentOutputDataModel>,
 ) => {
-    const {userId} = req.body;
+    const {userId} = req;
 
     if (!userId) {
         res.sendStatus(HTTP_STATUSES.UNAUTHORIZED);
