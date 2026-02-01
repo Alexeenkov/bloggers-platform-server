@@ -5,6 +5,7 @@ import {HTTP_STATUSES} from "../../../../shared/constants/httpStatuses";
 import {commentsService} from "../../../comments/application/commentsService";
 import {IdPathParamsModel} from "../../../../shared/models";
 import {usersQueryRepository} from "../../../users/repository/usersQueryRepository";
+import {postsQueryRepository} from "../../repository/postsQueryRepository";
 
 export const createCommentForSpecificPostHandler = async (
     req: RequestWithPathParamsAndBodyModel<IdPathParamsModel, CommentInputDataModel>,
@@ -22,6 +23,14 @@ export const createCommentForSpecificPostHandler = async (
 
     if (!commentatorInfo) {
         res.sendStatus(HTTP_STATUSES.UNAUTHORIZED);
+
+        return;
+    }
+
+    const post = await postsQueryRepository.findById(req.params.id);
+
+    if (!post) {
+        res.sendStatus(HTTP_STATUSES.NOT_FOUND);
 
         return;
     }
