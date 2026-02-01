@@ -706,7 +706,7 @@ const ui = SwaggerUIBundle({
                 "post": {
                     "summary": "Добавляет новый комментарий к конкретному посту",
                     "tags": ["Posts"],
-                    "security": [{"BasicAuth": []}],
+                    "security": [{"Bearer": []}],
                     "parameters": [{
                         "in": "path",
                         "name": "postId",
@@ -780,7 +780,7 @@ const ui = SwaggerUIBundle({
                 "put": {
                     "summary": "Обновляет комментарий по ID",
                     "tags": ["Comments"],
-                    "security": [{"BasicAuth": []}],
+                    "security": [{"Bearer": []}],
                     "parameters": [{
                         "in": "path",
                         "name": "id",
@@ -820,7 +820,7 @@ const ui = SwaggerUIBundle({
                 "delete": {
                     "summary": "Удаляет комментарий по ID",
                     "tags": ["Comments"],
-                    "security": [{"BasicAuth": []}],
+                    "security": [{"Bearer": []}],
                     "parameters": [{
                         "in": "path",
                         "name": "id",
@@ -1006,6 +1006,11 @@ const ui = SwaggerUIBundle({
                 "BasicAuth": {
                     "type": "http",
                     "scheme": "basic"
+                },
+                "Bearer": {
+                    "type": "http",
+                    "scheme": "bearer",
+                    "bearerFormat": "JWT"
                 }
             },
             "schemas": {

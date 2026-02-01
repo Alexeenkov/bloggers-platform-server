@@ -1,9 +1,9 @@
-import {CommentInputDataModel, CommentOutputDataModel, CommentDBModel} from "../models/commentsModel";
+import {CommentInputDataModel, CommentOutputDataModel, CommentDBModel, CommentModel} from "../models/commentsModel";
 import {commentsRepository} from "../repository/commentsRepository";
 import {createDateISO} from "../../../shared/utils/createDateISO";
 
 export const commentsService = {
-    async create(postId: string, data: CommentInputDataModel): Promise<CommentOutputDataModel> {
+    async create(postId: string, data: Omit<CommentModel, 'createdAt'>): Promise<CommentOutputDataModel> {
         const newComment: CommentDBModel = {
             postId,
             content: data.content,

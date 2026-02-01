@@ -3,13 +3,13 @@ import {SortDirectionType} from "../../../shared/constants/sortDirection";
 import type {ParsedQs} from "qs";
 
 export interface CommentatorInfoModel {
-    userId: string,
+    userId: string
     userLogin: string
 }
 
 export interface CommentModel {
-    content: string,
-    commentatorInfo: CommentatorInfoModel,
+    content: string
+    commentatorInfo: CommentatorInfoModel
     createdAt: ISO8601StringModel
 }
 
@@ -19,7 +19,7 @@ export interface CommentOutputDataModel extends CommentModel {
 
 export interface CommentInputDataModel {
     content: string
-    commentatorInfo: CommentatorInfoModel
+    userId: string
 }
 
 export interface CommentInputQueryModel extends ParsedQs {
@@ -45,8 +45,8 @@ export interface CommentsOutputWithPaginationModel {
 }
 
 export interface CommentDBModel {
-    postId: string;
-    content: string;
-    commentatorInfo: CommentatorInfoModel;
-    createdAt: ISO8601StringModel;
+    postId: string
+    content: string
+    commentatorInfo: CommentatorInfoModel
+    createdAt: ISO8601StringModel
 }
