@@ -11,4 +11,13 @@ export const authRepository = {
             ],
         });
     },
+
+    async getUserByLoginOrEmail(login: string, email: string): Promise<WithId<UserModel> | null> {
+        return await db.users.findOne({
+            $or: [
+                {login: login},
+                {email: email},
+            ],
+        });
+    },
 };

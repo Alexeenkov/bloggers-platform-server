@@ -53,6 +53,26 @@ const ui = SwaggerUIBundle({
                     }
                 }
             },
+            "/api/auth/registration": {
+                "post": {
+                    "summary": "Регистрирует нового пользователя",
+                    "tags": ["Auth"],
+                    "requestBody": {
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationInputDataModel"
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "204": {"description": "Пользователь успешно зарегистрирован"},
+                        "400": {"description": "Логин/email уже заняты или возникла проблема с созданием пользователя"},
+                    }
+                }
+            },
             "/api/blogs": {
                 "get": {
                     "summary": "Возвращает список всех блогов",
@@ -1020,11 +1040,40 @@ const ui = SwaggerUIBundle({
                     "properties": {
                         "loginOrEmail": {
                             "type": "string",
+                            "description": "Логин или email",
                         },
                         "password": {
                             "type": "string",
                             "minLength": 6,
                             "maxLength": 20,
+                        },
+                    }
+                },
+                "RegistrationInputDataModel": {
+                    "type": "object",
+                    "required": [
+                        "login",
+                        "email",
+                        "password"
+                    ],
+                    "properties": {
+                        "login": {
+                            "type": "string",
+                            "minLength": 3,
+                            "maxLength": 10,
+                            "description": "Должен быть уникальным",
+                            "example": "exampleUserLogin"
+                        },
+                        "email": {
+                            "type": "string",
+                            "format": "email",
+                            "description": "Должен быть уникальным",
+                            "example": "example@example.com"
+                        },
+                        "password": {
+                            "type": "string",
+                            "minLength": 6,
+                            "maxLength": 20
                         },
                     }
                 },

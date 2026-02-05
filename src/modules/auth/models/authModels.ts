@@ -6,3 +6,9 @@ export interface LoginInputDataModel {
 export interface AccessTokenResponseModel {
     accessToken: string | null
 }
+
+export interface RegistrationInputDataModel {
+    login: string
+    email: string
+    password: string
+}
