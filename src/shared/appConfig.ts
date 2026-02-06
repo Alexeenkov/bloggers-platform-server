@@ -10,4 +10,8 @@ export const appConfig = {
     adminPassword: process.env.ADMIN_PASSWORD,
     jwtSecret: process.env.TOKEN_SECRET as string,
     jwtExpiration: process.env.TOKEN_EXPIRATION as StringValue,
+    email: process.env.EMAIL,
+    googleClientId: process.env.GOOGLE_CLIENT_ID,
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN,
 }

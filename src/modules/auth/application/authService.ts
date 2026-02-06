@@ -7,6 +7,7 @@ import {jwtService} from "../adapters/jwt-service";
 import {usersService} from "../../users/application/usersService";
 import {HTTP_STATUSES} from "../../../shared/constants/httpStatuses";
 import {CustomError} from "../../../shared/utils/CustomError";
+import {emailAdapter} from "../../../shared/adapters/emailAdapter";
 
 export const authService = {
     async checkCredentials(data: LoginInputDataModel): Promise<AccessTokenResponseModel> {
@@ -40,6 +41,14 @@ export const authService = {
 
         if (!newUser) {
             throw new CustomError('user', 'User not created', HTTP_STATUSES.BAD_REQUEST);
+        }
+
+        try {
+            await emailAdapter.sendEmail(newUser.email, 'Welcome to the platform', 'Welcome to the platform');
+        } catch (error) {
+            console.error(error)
+
+            throw new CustomError('email', 'Email not sent', HTTP_STATUSES.BAD_REQUEST);
         }
 
         return newUser;
