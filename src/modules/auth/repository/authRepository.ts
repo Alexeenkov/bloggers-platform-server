@@ -6,8 +6,8 @@ export const authRepository = {
     async getUserPasswordByLoginOrEmail(loginOrEmail: string): Promise<WithId<UserModel> | null> {
         return await db.users.findOne({
             $or: [
-                {login: loginOrEmail},
-                {email: loginOrEmail},
+                {'accountData.login': loginOrEmail},
+                {'accountData.email': loginOrEmail},
             ],
         });
     },
@@ -15,8 +15,8 @@ export const authRepository = {
     async getUserByLoginOrEmail(login: string, email: string): Promise<WithId<UserModel> | null> {
         return await db.users.findOne({
             $or: [
-                {login: login},
-                {email: email},
+                {'accountData.login': login},
+                {'accountData.email': email},
             ],
         });
     },

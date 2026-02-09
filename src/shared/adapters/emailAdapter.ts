@@ -6,11 +6,8 @@ export const emailAdapter = {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                type: "OAuth2",
                 user: appConfig.email,
-                clientId: appConfig.googleClientId,
-                clientSecret: appConfig.googleClientSecret,
-                refreshToken: appConfig.googleRefreshToken,
+                pass: appConfig.emailPassword,
             },
         })
 

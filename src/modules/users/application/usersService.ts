@@ -5,9 +5,11 @@ import {usersQueryRepository} from "../repository/usersQueryRepository";
 import {CustomError} from "../../../shared/utils/CustomError";
 import {HTTP_STATUSES} from "../../../shared/constants/httpStatuses";
 import bcrypt from "bcrypt";
+import {randomUUID} from "crypto";
+import {add} from "date-fns/add";
 
 export const usersService = {
-    async create(data: UserInputDataModel): Promise<UserOutputDataModel> {
+    async create(data: UserInputDataModel, isNeedConfirmation: boolean = true): Promise<UserOutputDataModel> {
         const foundUser: UserOutputDataModel | null = await usersQueryRepository.findByLoginOrEmail(
             data.login,
             data.email,
@@ -24,10 +26,17 @@ export const usersService = {
         const passwordHash: string = await this._generateHash(data.password);
 
         const newUser: UserModel = {
-            login: data.login,
-            password: passwordHash,
-            email: data.email,
-            createdAt: createDateISO(new Date()),
+            accountData: {
+                login: data.login,
+                password: passwordHash,
+                email: data.email,
+                createdAt: createDateISO(new Date()),
+            },
+            emailConfirmation: {
+                confirmationCode: randomUUID(),
+                expirationDate: createDateISO(add(new Date(), {hours: 1})),
+                isConfirmed: !isNeedConfirmation,
+            },
         };
 
         return await usersRepository.create(newUser);

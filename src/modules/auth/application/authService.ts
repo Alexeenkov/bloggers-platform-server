@@ -19,7 +19,9 @@ export const authService = {
             };
         }
 
-        const isPasswordCorrect: boolean = await bcrypt.compare(data.password, user.password);
+        console.log('user', user);
+
+        const isPasswordCorrect: boolean = await bcrypt.compare(data.password, user.accountData.password);
 
         if (!isPasswordCorrect) {
             return {

@@ -24,13 +24,13 @@ export const usersQueryRepository = {
 
         if (searchLoginTerm && searchEmailTerm) {
             filter.$or = [
-                {login: {$regex: searchLoginTerm, $options: 'i'}},
-                {email: {$regex: searchEmailTerm, $options: 'i'}},
+                {'accountData.login': {$regex: searchLoginTerm, $options: 'i'}},
+                {'accountData.email': {$regex: searchEmailTerm, $options: 'i'}},
             ];
         } else if (searchLoginTerm) {
-            filter.login = {$regex: searchLoginTerm, $options: 'i'};
+            filter['accountData.login'] = {$regex: searchLoginTerm, $options: 'i'};
         } else if (searchEmailTerm) {
-            filter.email = {$regex: searchEmailTerm, $options: 'i'};
+            filter['accountData.email'] = {$regex: searchEmailTerm, $options: 'i'};
         }
 
         const foundUsers = await db.users.find(filter)
@@ -62,8 +62,8 @@ export const usersQueryRepository = {
     async findByLoginOrEmail(login: string, email: string): Promise<UserOutputDataModel | null> {
         const foundUser = await db.users.findOne({
             $or: [
-                {login},
-                {email},
+                {'accountData.login': login},
+                {'accountData.email': email},
             ],
         });
 
