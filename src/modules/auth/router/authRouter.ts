@@ -3,7 +3,7 @@ import {loginHandler} from "./handlers";
 import {resultValidationMiddleware} from "../../../shared/middlewares/validation";
 import {inputAuthDataValidationMiddleware} from "../middlewares/validation/inputAuthDataValidationMiddleware";
 import {registrationHandler} from "./handlers/registrationHandler";
-import {inputRegistrationDataValidationMiddleware} from "../middlewares/validation/inputRegistrationDataValidationMiddleware";
+import {inputUserDataValidationMiddleware} from "../../users/middlewares/validation/inputUserDataValidationMiddleware";
 
 export const authRouter = Router({});
 
@@ -14,7 +14,7 @@ authRouter.post('/login',
 );
 
 authRouter.post('/registration',
-    inputRegistrationDataValidationMiddleware,
+    inputUserDataValidationMiddleware,
     resultValidationMiddleware,
     registrationHandler,
 );
