@@ -2,9 +2,11 @@ import nodemailer from 'nodemailer'
 import {appConfig} from '../appConfig'
 
 export const emailAdapter = {
-    sendEmail: async (email: string, subject: string, text: string) => {
+    sendEmail: async (email: string, subject: string, html: string) => {
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
             auth: {
                 user: appConfig.email,
                 pass: appConfig.emailPassword,
@@ -15,7 +17,7 @@ export const emailAdapter = {
             from: appConfig.email,
             to: email,
             subject,
-            text,
+            html,
         })
 
         return info

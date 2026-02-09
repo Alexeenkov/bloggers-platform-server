@@ -8,6 +8,8 @@ import {usersService} from "../../users/application/usersService";
 import {HTTP_STATUSES} from "../../../shared/constants/httpStatuses";
 import {CustomError} from "../../../shared/utils/CustomError";
 import {emailAdapter} from "../../../shared/adapters/emailAdapter";
+import {emailTemplatesRepository} from "../repository/email-templates-repository";
+import {usersRepository} from "../../users/repository/usersRepository";
 
 export const authService = {
     async checkCredentials(data: LoginInputDataModel): Promise<AccessTokenResponseModel> {
@@ -46,10 +48,12 @@ export const authService = {
         }
 
         try {
-            await emailAdapter.sendEmail(newUser.email, 'Welcome to the platform', 'Welcome to the platform');
+            const template = await emailTemplatesRepository.getConfirmationEmailTemplate(newUser.id);
+
+            await emailAdapter.sendEmail(newUser.email, 'Welcome to the platform', template);
         } catch (error) {
             console.error(error)
-
+            await usersRepository.delete(newUser.id);
             throw new CustomError('email', 'Email not sent', HTTP_STATUSES.BAD_REQUEST);
         }
 
