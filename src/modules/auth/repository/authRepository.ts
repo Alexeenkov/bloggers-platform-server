@@ -1,6 +1,9 @@
 import {db} from "../../../mongodb/db";
-import type {WithId} from "mongodb";
+import type {UpdateResult, WithId} from "mongodb";
 import type {UserModel} from "../../users/models/usersModels";
+import {ObjectId} from "mongodb";
+import {mappingUserConfirmationEmail} from "../features/mappingUserConfirmationEmail";
+import {UserConfirmationEmailOutputDataModel} from "../models/authModels";
 
 export const authRepository = {
     async getUserPasswordByLoginOrEmail(loginOrEmail: string): Promise<WithId<UserModel> | null> {
@@ -19,5 +22,28 @@ export const authRepository = {
                 {'accountData.email': email},
             ],
         });
+    },
+
+    async getUserByConfirmationCode(code: string): Promise<UserConfirmationEmailOutputDataModel | null> {
+        const user = await db.users.findOne({'emailConfirmation.confirmationCode': code});
+
+        console.log('user', user);
+
+        if (!user) {
+            return null
+        }
+
+        return mappingUserConfirmationEmail(user);
+    },
+
+    async confirmUser(id: string): Promise<boolean> {
+        const _id: ObjectId = new ObjectId(id);
+
+        const result: UpdateResult = await db.users.updateOne(
+            {_id},
+            {$set: {'emailConfirmation.isConfirmed': true}},
+        );
+
+        return result.matchedCount === 1;
     },
 };

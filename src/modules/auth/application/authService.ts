@@ -59,4 +59,30 @@ export const authService = {
 
         return newUser;
     },
+
+    async confirmRegistration(code: string): Promise<boolean> {
+        const user = await authRepository.getUserByConfirmationCode(code);
+
+        if (!user) {
+            throw new CustomError('user', 'User not found', HTTP_STATUSES.NOT_FOUND);
+        }
+
+        if (user.isConfirmed === true) {
+            throw new CustomError('user', 'User already confirmed', HTTP_STATUSES.BAD_REQUEST);
+        }
+
+        if (user.expirationDate < new Date()) {
+            throw new CustomError('user', 'User confirmation code expired', HTTP_STATUSES.BAD_REQUEST);
+        }
+
+        const isConfirmed = await authRepository.confirmUser(user.id);
+
+        console.log('isConfirmed', isConfirmed);
+
+        if (!isConfirmed) {
+            throw new CustomError('user', 'User confirmation failed', HTTP_STATUSES.BAD_REQUEST);
+        }
+
+        return isConfirmed;
+    },
 };

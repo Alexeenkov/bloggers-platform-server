@@ -73,6 +73,26 @@ const ui = SwaggerUIBundle({
                     }
                 }
             },
+            "/api/auth/registration-confirmation": {
+                "post": {
+                    "summary": "Подтверждает регистрацию пользователя",
+                    "tags": ["Auth"],
+                    "requestBody": {
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationConfirmationInputDataModel"
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "204": {"description": "Пользователь успешно подтвердил регистрацию"},
+                        "400": {"description": "Код подтверждения невалидный или просрочен"},
+                    }
+                }
+            },
             "/api/blogs": {
                 "get": {
                     "summary": "Возвращает список всех блогов",
@@ -1076,6 +1096,16 @@ const ui = SwaggerUIBundle({
                             "minLength": 6,
                             "maxLength": 20
                         },
+                    }
+                },
+                "RegistrationConfirmationInputDataModel": {
+                    "type": "object",
+                    "required": ["code"],
+                    "properties": {
+                        "code": {
+                            "type": "string",
+                            "description": "Код подтверждения"
+                        }
                     }
                 },
                 "AccessTokenResponseModel":

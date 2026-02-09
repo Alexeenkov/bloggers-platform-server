@@ -12,3 +12,14 @@ export interface RegistrationInputDataModel {
     email: string
     password: string
 }
+
+export interface RegistrationConfirmationInputDataModel {
+    code: string
+}
+
+export interface UserConfirmationEmailOutputDataModel {
+    id: string
+    confirmationCode: string
+    expirationDate: Date
+    isConfirmed: boolean
+}

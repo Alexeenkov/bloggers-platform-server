@@ -1,4 +1,4 @@
-import {Request, Response} from "express";
+import {Response} from "express";
 import {RequestWithBodyModel} from "../../../../shared/models";
 import {RegistrationInputDataModel} from "../../models/authModels";
 import {authService} from "../../application/authService";
