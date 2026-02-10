@@ -1100,7 +1100,7 @@ const ui = SwaggerUIBundle({
                         "login": {
                             "type": "string",
                             "minLength": 3,
-                            "maxLength": 20,
+                            "maxLength": 10,
                             "description": "Должен быть уникальным",
                             "pattern": "/^[a-zA-Z0-9_-]*$/",
                             "example": "exampleUserLogin"
@@ -1393,7 +1393,7 @@ const ui = SwaggerUIBundle({
                         "login": {
                             "type": "string",
                             "minLength": 3,
-                            "maxLength": 20,
+                            "maxLength": 10,
                             "pattern": "/^[a-zA-Z0-9_-]*$/",
                             "description": "Должен быть уникальным",
                             "example": "exampleUserLogin"

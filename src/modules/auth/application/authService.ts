@@ -10,6 +10,9 @@ import {CustomError} from "../../../shared/utils/CustomError";
 import {emailAdapter} from "../../../shared/adapters/emailAdapter";
 import {emailTemplatesRepository} from "../repository/email-templates-repository";
 import {usersRepository} from "../../users/repository/usersRepository";
+import {randomUUID} from "crypto";
+import {add} from "date-fns/add";
+import {createDateISO} from "../../../shared/utils/createDateISO";
 
 export const authService = {
     async checkCredentials(data: LoginInputDataModel): Promise<AccessTokenResponseModel> {
@@ -68,11 +71,11 @@ export const authService = {
         const user = await authRepository.getUserByConfirmationCode(code);
 
         if (!user) {
-            throw new CustomError('user', 'User not found', HTTP_STATUSES.NOT_FOUND);
+            throw new CustomError('code', 'Confirmation code is incorrect', HTTP_STATUSES.BAD_REQUEST);
         }
 
         if (user.isConfirmed === true) {
-            throw new CustomError('user', 'User already confirmed', HTTP_STATUSES.BAD_REQUEST);
+            throw new CustomError('code', 'User already confirmed', HTTP_STATUSES.BAD_REQUEST);
         }
 
         if (user.expirationDate < new Date()) {
@@ -92,13 +95,17 @@ export const authService = {
         const user = await authRepository.getUserByEmail(email);
 
         if (!user) {
-            throw new CustomError('user', 'User not found', HTTP_STATUSES.NOT_FOUND);
+            throw new CustomError('email', 'Email is incorrect', HTTP_STATUSES.BAD_REQUEST);
         }
 
         if (user.isConfirmed === true) {
-            throw new CustomError('user', 'User already confirmed', HTTP_STATUSES.BAD_REQUEST);
+            throw new CustomError('email', 'User already confirmed', HTTP_STATUSES.BAD_REQUEST);
         }
 
+        const newConfirmationCode = randomUUID();
+        const newExpirationDate = createDateISO(add(new Date(), {hours: 1}));
+
+        await authRepository.updateConfirmationCode(user.id, newConfirmationCode, newExpirationDate);
         await this.sendConfirmationEmail(user);
     },
 };

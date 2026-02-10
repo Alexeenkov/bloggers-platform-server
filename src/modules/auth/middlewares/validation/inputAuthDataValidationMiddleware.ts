@@ -1,1 +1,16 @@
-import {body, ValidationChain} from "express-validator";const loginOrEmailValidation =    body('loginOrEmail')        .isString().withMessage('login or email should be string');const passwordValidation =    body('password')        .isString().withMessage('password should be string')        .trim()        .isLength({ min: 6, max: 20 }).withMessage('password length must be must be between 6 and 20');export const inputAuthDataValidationMiddleware: ValidationChain[] = [    loginOrEmailValidation,    passwordValidation,];
+import {body, ValidationChain} from "express-validator";
+
+const loginOrEmailValidation =
+    body('loginOrEmail')
+        .isString().withMessage('login or email should be string');
+
+const passwordValidation =
+    body('password')
+        .isString().withMessage('password should be string')
+        .trim()
+        .isLength({min: 6, max: 20}).withMessage('password length must be must be between 6 and 20');
+
+export const inputAuthDataValidationMiddleware: ValidationChain[] = [
+    loginOrEmailValidation,
+    passwordValidation,
+];

@@ -56,4 +56,20 @@ export const authRepository = {
 
         return mappingUser(user);
     },
+
+    async updateConfirmationCode(id: string, confirmationCode: string, expirationDate: string): Promise<boolean> {
+        const _id: ObjectId = new ObjectId(id);
+
+        const result: UpdateResult = await db.users.updateOne(
+            {_id},
+            {
+                $set: {
+                    'emailConfirmation.confirmationCode': confirmationCode,
+                    'emailConfirmation.expirationDate': expirationDate
+                }
+            },
+        );
+
+        return result.matchedCount === 1;
+    },
 };

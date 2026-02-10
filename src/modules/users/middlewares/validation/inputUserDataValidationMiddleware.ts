@@ -5,7 +5,7 @@ const loginValidation =
     body('login')
         .isString().withMessage('login should be string')
         .trim()
-        .isLength({min: 3, max: 20}).withMessage('login length must be between 3 and 20')
+        .isLength({min: 3, max: 10}).withMessage('login length must be between 3 and 10')
         .matches(REGEXPS.login).withMessage('login is not valid');
 
 const passwordValidation =
