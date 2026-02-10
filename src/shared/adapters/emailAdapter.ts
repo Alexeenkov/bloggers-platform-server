@@ -14,7 +14,7 @@ export const emailAdapter = {
         })
 
         const info = await transporter.sendMail({
-            from: appConfig.email,
+            from: `"Bloggers Platform" <${appConfig.email}>`,
             to: email,
             subject,
             html,

@@ -4,6 +4,8 @@ import type {UserModel} from "../../users/models/usersModels";
 import {ObjectId} from "mongodb";
 import {mappingUserConfirmationEmail} from "../features/mappingUserConfirmationEmail";
 import {UserConfirmationEmailOutputDataModel} from "../models/authModels";
+import {UserOutputDataModel} from "../../users/models/usersModels";
+import {mappingUser} from "../../users/features/mappingUser";
 
 export const authRepository = {
     async getUserPasswordByLoginOrEmail(loginOrEmail: string): Promise<WithId<UserModel> | null> {
@@ -27,8 +29,6 @@ export const authRepository = {
     async getUserByConfirmationCode(code: string): Promise<UserConfirmationEmailOutputDataModel | null> {
         const user = await db.users.findOne({'emailConfirmation.confirmationCode': code});
 
-        console.log('user', user);
-
         if (!user) {
             return null
         }
@@ -45,5 +45,15 @@ export const authRepository = {
         );
 
         return result.matchedCount === 1;
+    },
+
+    async getUserByEmail(email: string): Promise<UserOutputDataModel | null> {
+        const user = await db.users.findOne({'accountData.email': email});
+
+        if (!user) {
+            return null
+        }
+
+        return mappingUser(user);
     },
 };

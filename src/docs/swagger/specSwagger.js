@@ -93,6 +93,26 @@ const ui = SwaggerUIBundle({
                     }
                 }
             },
+            "/api/auth/registration-email-resending": {
+                "post": {
+                    "summary": "Отправляет новый код подтверждения на email пользователя",
+                    "tags": ["Auth"],
+                    "requestBody": {
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationEmailResendingInputDataModel"
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "204": {"description": "Новый код подтверждения отправлен на email пользователя"},
+                        "400": {"description": "Email невалидный или пользователь уже подтвердил регистрацию"},
+                    }
+                }
+            },
             "/api/blogs": {
                 "get": {
                     "summary": "Возвращает список всех блогов",
@@ -1105,6 +1125,18 @@ const ui = SwaggerUIBundle({
                         "code": {
                             "type": "string",
                             "description": "Код подтверждения"
+                        }
+                    }
+                },
+                "RegistrationEmailResendingInputDataModel": {
+                    "type": "object",
+                    "required": ["email"],
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "format": "email",
+                            "description": "Email пользователя",
+                            "example": "example@example.com"
                         }
                     }
                 },

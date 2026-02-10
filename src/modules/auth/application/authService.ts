@@ -47,17 +47,21 @@ export const authService = {
             throw new CustomError('user', 'User not created', HTTP_STATUSES.BAD_REQUEST);
         }
 
-        try {
-            const template = await emailTemplatesRepository.getConfirmationEmailTemplate(newUser.id);
-
-            await emailAdapter.sendEmail(newUser.email, 'Welcome to the platform', template);
-        } catch (error) {
-            console.error(error)
-            await usersRepository.delete(newUser.id);
-            throw new CustomError('email', 'Email not sent', HTTP_STATUSES.BAD_REQUEST);
-        }
+        await this.sendConfirmationEmail(newUser);
 
         return newUser;
+    },
+
+    async sendConfirmationEmail(user: UserOutputDataModel): Promise<void> {
+        try {
+            const template = await emailTemplatesRepository.getConfirmationEmailTemplate(user.id);
+
+            await emailAdapter.sendEmail(user.email, 'Welcome to the platform', template);
+        } catch (error) {
+            console.error(error)
+            await usersRepository.delete(user.id);
+            throw new CustomError('email', 'Email not sent', HTTP_STATUSES.BAD_REQUEST);
+        }
     },
 
     async confirmRegistration(code: string): Promise<boolean> {
@@ -77,12 +81,24 @@ export const authService = {
 
         const isConfirmed = await authRepository.confirmUser(user.id);
 
-        console.log('isConfirmed', isConfirmed);
-
         if (!isConfirmed) {
             throw new CustomError('user', 'User confirmation failed', HTTP_STATUSES.BAD_REQUEST);
         }
 
         return isConfirmed;
+    },
+
+    async resendConfirmationEmail(email: string): Promise<void> {
+        const user = await authRepository.getUserByEmail(email);
+
+        if (!user) {
+            throw new CustomError('user', 'User not found', HTTP_STATUSES.NOT_FOUND);
+        }
+
+        if (user.isConfirmed === true) {
+            throw new CustomError('user', 'User already confirmed', HTTP_STATUSES.BAD_REQUEST);
+        }
+
+        await this.sendConfirmationEmail(user);
     },
 };
