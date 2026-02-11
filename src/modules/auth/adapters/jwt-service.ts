@@ -1,8 +1,5 @@
 import jwt, {type JwtPayload} from "jsonwebtoken";
 import {appConfig} from "../../../shared/appConfig";
-import {CustomError} from "../../../shared/utils/CustomError";
-import {HTTP_STATUSES} from "../../../shared/constants/httpStatuses";
-import {refreshTokenRepository} from "../repository/refreshTokenRepository";
 
 export const jwtService = {
     createToken(userId: string): string {

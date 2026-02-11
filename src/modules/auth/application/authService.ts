@@ -118,24 +118,70 @@ export const authService = {
             throw new CustomError('token', 'Invalid token', HTTP_STATUSES.UNAUTHORIZED);
         }
 
+        // Проверяем наличие userId в payload
+        if (!tokenPayload.userId) {
+            throw new CustomError('token', 'Invalid token payload', HTTP_STATUSES.UNAUTHORIZED);
+        }
+
+        // Проверяем, не инвалидирован ли токен (черный список)
+        // ВАЖНО: Проверка в service слое (не в middleware) для соблюдения слоистой архитектуры
         const isTokenInvalidated = await refreshTokenRepository.isTokenInvalidated(refreshToken);
 
         if (isTokenInvalidated) {
-            throw new CustomError('token', 'Invalid token', HTTP_STATUSES.UNAUTHORIZED);
+            throw new CustomError('token', 'Token has been revoked', HTTP_STATUSES.UNAUTHORIZED);
         }
+
+        // Инвалидируем старый refresh token (rotation tokens для безопасности)
+        // Конвертируем exp (Unix timestamp в секундах) в Date объект
+        const expiresAtDate = tokenPayload.exp 
+            ? new Date(tokenPayload.exp * 1000) 
+            : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // fallback: 30 дней
 
         await refreshTokenRepository.setInvalidatedToken({
             token: refreshToken,
             userId: tokenPayload.userId,
-            expiresAt: tokenPayload.expiresAt,
+            expiresAt: expiresAtDate,
             invalidatedAt: new Date(),
         });
 
         const {userId} = tokenPayload;
 
+        // Генерируем новую пару токенов
         return {
             accessToken: jwtService.createToken(userId),
             refreshToken: jwtService.createRefreshToken(userId),
         };
+    },
+
+    async logout(refreshToken: string): Promise<void> {
+        const tokenPayload = jwtService.verifyRefreshToken(refreshToken);
+
+        if (!tokenPayload || typeof tokenPayload === 'string') {
+            throw new CustomError('token', 'Invalid token', HTTP_STATUSES.UNAUTHORIZED);
+        }
+
+        if (!tokenPayload.userId) {
+            throw new CustomError('token', 'Invalid token payload', HTTP_STATUSES.UNAUTHORIZED);
+        }
+
+        // Проверяем, не инвалидирован ли токен уже
+        const isTokenInvalidated = await refreshTokenRepository.isTokenInvalidated(refreshToken);
+
+        if (isTokenInvalidated) {
+            // Токен уже в черном списке, просто возвращаемся
+            return;
+        }
+
+        // Добавляем токен в черный список
+        const expiresAtDate = tokenPayload.exp 
+            ? new Date(tokenPayload.exp * 1000) 
+            : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+
+        await refreshTokenRepository.setInvalidatedToken({
+            token: refreshToken,
+            userId: tokenPayload.userId,
+            expiresAt: expiresAtDate,
+            invalidatedAt: new Date(),
+        });
     },
 };

@@ -8,17 +8,23 @@ export const loginHandler = async (
     req: RequestWithBodyModel<LoginInputDataModel>,
     res: Response
 ) => {
-    const accessTokenResponse: TokensResponseModel = await authService.checkCredentials(req.body);
+    const tokensResponse: TokensResponseModel = await authService.checkCredentials(req.body);
 
-    if (!accessTokenResponse.accessToken) {
+    if (!tokensResponse.accessToken || !tokensResponse.refreshToken) {
         res.sendStatus(HTTP_STATUSES.UNAUTHORIZED);
-
         return;
     }
 
-    res.cookie('refreshToken', accessTokenResponse.refreshToken, {
+    // Устанавливаем refresh token в HttpOnly cookie
+    res.cookie('refreshToken', tokensResponse.refreshToken, {
         httpOnly: true,
-        secure: true,
-        maxAge: 1000 * 60 * 60 * 24 * 30,
-    }).status(HTTP_STATUSES.OK).json(accessTokenResponse);
+        secure: process.env.NODE_ENV === 'production', // HTTPS только в продакшене
+        sameSite: 'strict', // Защита от CSRF
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 дней
+    });
+
+    // Возвращаем только access token в теле ответа
+    res.status(HTTP_STATUSES.OK).json({
+        accessToken: tokensResponse.accessToken,
+    });
 }

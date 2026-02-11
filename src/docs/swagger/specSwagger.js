@@ -113,6 +113,35 @@ const ui = SwaggerUIBundle({
                     }
                 }
             },
+            "/api/auth/refresh-token": {
+                "post": {
+                    "summary": "Обновляет токен доступа",
+                    "tags": ["Auth"],
+                    "responses": {
+                        "200": {
+                            "description": "Токен доступа обновлён",
+                            "content": {
+                                "application/json": {
+                                    "schema": {"$ref": "#/components/schemas/AccessTokenResponseModel"}
+                                }
+                            }
+                        },
+                        "401": {
+                            "description": "Не прошёл авторизацию"
+                        }
+                    }
+                }
+            },
+            "/api/auth/logout": {
+                "post": {
+                    "summary": "Выходит из системы",
+                    "tags": ["Auth"],
+                    "responses": {
+                        "204": {"description": "Пользователь успешно вышел из системы"},
+                        "401": {"description": "Не прошёл авторизацию"}
+                    }
+                }
+            },
             "/api/blogs": {
                 "get": {
                     "summary": "Возвращает список всех блогов",

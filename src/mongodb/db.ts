@@ -17,15 +17,6 @@ const getDatabase = (): Db => {
     return database;
 };
 
-const createAutoDeleteIndex = (collection: Collection<any>): void => {
-    collection.createIndex(
-        {expiresAt: 1},
-        {expireAfterSeconds: 0},
-    );
-
-    console.log(`✅ ${collection.collectionName} auto delete index created successfully`);
-};
-
 export const db = {
     get blogs(): Collection<BlogModel> {
         return getDatabase().collection<BlogModel>('blogs');
@@ -47,20 +38,55 @@ export const db = {
     },
 };
 
-export const runDb = async (url: string): Promise<void> => {
-    client = new MongoClient(url);
-
+/**
+ * Соединяется с MongoDB
+ */
+const connectToDatabase = async (url: string): Promise<void> => {
     try {
+        client = new MongoClient(url);
         await client.connect();
         database = client.db();
         await database.command({ping: 1});
+
         console.log('✅ Connected successfully to mongo server');
-        createAutoDeleteIndex(db.refreshTokens);
     } catch (err) {
         console.log(`❌ Database is not connected: ${err}`);
-
-        throw err;
     }
+};
+
+/**
+ * Создает TTL индексы для автоматического удаления документов
+ * и поиска инвалидированных токенов по токену
+ * 
+ * @description
+ * Документы refreshTokens удаляются сразу после даты в поле expiresAt.
+ * Документы invalidatedTokens удаляются сразу после даты в поле expiresAt.
+ * Документы invalidatedTokens ищутся по токену в поле token.
+ */
+const createIndexes = async (): Promise<void> => {
+    try {
+        await db.refreshTokens.createIndex(
+            {expiresAt: 1},
+            {expireAfterSeconds: 0},
+        );
+        await db.invalidatedTokens.createIndex(
+            {expiresAt: 1},
+            {expireAfterSeconds: 0},
+        );
+        await db.invalidatedTokens.createIndex(
+            {token: 1},
+            {name: 'invalidatedTokens_token_index'},
+        );
+
+        console.log(`✅ TTL indexes created successfully`);
+    } catch (err) {
+        console.log(`❌ Error creating TTL indexes: ${err}`);
+    }
+};
+
+export const runDb = async (url: string): Promise<void> => {
+    await connectToDatabase(url);
+    await createIndexes();
 };
 
 export const stopDb = async (): Promise<void> => {
