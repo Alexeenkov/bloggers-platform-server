@@ -2,7 +2,7 @@ import {NextFunction, Request, Response} from 'express';
 import {HTTP_STATUSES} from "../../constants/httpStatuses";
 import {appConfig} from "../../appConfig";
 
-export const basicAuthGuardMiddleware = (
+export const basicAuthGuard = (
   req: Request,
   res: Response,
   next: NextFunction,

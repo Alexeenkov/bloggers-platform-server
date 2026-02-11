@@ -14,7 +14,7 @@ import {
     resultValidationMiddleware
 } from "../../../shared/middlewares/validation";
 import {inputBlogDataValidationMiddleware} from "../middlewares/validation/inputBlogDataValidationMiddleware";
-import {basicAuthGuardMiddleware} from "../../../shared/middlewares/auth/basicAuthGuardMiddleware";
+import {basicAuthGuard} from "../../../shared/middlewares/auth/basicAuthGuard";
 import {inputPostDataForSpecBlogValidationMiddleware} from "../middlewares/validation/inputPostDataForSpecBlogValidationMiddleware";
 
 export const blogsRouter = Router({});
@@ -26,7 +26,7 @@ blogsRouter.get('/',
 );
 
 blogsRouter.post('/',
-    basicAuthGuardMiddleware,
+    basicAuthGuard,
     inputBlogDataValidationMiddleware,
     resultValidationMiddleware,
     createBlogHandler,
@@ -46,7 +46,7 @@ blogsRouter.get('/:id/posts',
 );
 
 blogsRouter.post('/:id/posts',
-    basicAuthGuardMiddleware,
+    basicAuthGuard,
     inputPostDataForSpecBlogValidationMiddleware,
     idValidationMiddleware,
     paginationAndSortingMiddleware,
@@ -55,7 +55,7 @@ blogsRouter.post('/:id/posts',
 );
 
 blogsRouter.put('/:id',
-    basicAuthGuardMiddleware,
+    basicAuthGuard,
     idValidationMiddleware,
     inputBlogDataValidationMiddleware,
     resultValidationMiddleware,
@@ -63,7 +63,7 @@ blogsRouter.put('/:id',
 );
 
 blogsRouter.delete('/:id',
-    basicAuthGuardMiddleware,
+    basicAuthGuard,
     idValidationMiddleware,
     resultValidationMiddleware,
     deleteBlogHandler,

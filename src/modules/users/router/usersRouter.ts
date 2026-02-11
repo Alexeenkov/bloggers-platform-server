@@ -6,26 +6,26 @@ import {
     resultValidationMiddleware
 } from "../../../shared/middlewares/validation";
 import {inputUserDataValidationMiddleware} from "../middlewares/validation/inputUserDataValidationMiddleware";
-import {basicAuthGuardMiddleware} from "../../../shared/middlewares/auth/basicAuthGuardMiddleware";
+import {basicAuthGuard} from "../../../shared/middlewares/auth/basicAuthGuard";
 
 export const usersRouter = Router({});
 
 usersRouter.get('/',
-    basicAuthGuardMiddleware,
+    basicAuthGuard,
     paginationAndSortingMiddleware,
     resultValidationMiddleware,
     getUsersListHandler,
 );
 
 usersRouter.post('/',
-    basicAuthGuardMiddleware,
+    basicAuthGuard,
     inputUserDataValidationMiddleware,
     resultValidationMiddleware,
     createUserHandler,
 );
 
 usersRouter.delete('/:id',
-    basicAuthGuardMiddleware,
+    basicAuthGuard,
     idValidationMiddleware,
     resultValidationMiddleware,
     deleteUserHandler,

@@ -24,7 +24,8 @@ export const bearerAuthGuard = (
   }
 
   try {
-    const tokenPayload = jwtService.verifyToken(token);
+    // TODO: shared middleware зависит от модуля auth. Нужно избавиться от этой зависимости.
+    const tokenPayload = jwtService.verifyAccessToken(token);
 
     if (!tokenPayload || typeof tokenPayload === 'string') {
       res.sendStatus(HTTP_STATUSES.UNAUTHORIZED);

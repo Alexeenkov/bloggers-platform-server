@@ -14,7 +14,7 @@ import {
     resultValidationMiddleware
 } from "../../../shared/middlewares/validation";
 import {inputPostDataValidationMiddleware} from "../middlewares/validation/inputPostDataValidationMiddleware";
-import {basicAuthGuardMiddleware} from "../../../shared/middlewares/auth/basicAuthGuardMiddleware";
+import {basicAuthGuard} from "../../../shared/middlewares/auth/basicAuthGuard";
 import {bearerAuthGuard} from "../../../shared/middlewares/auth/bearerAuthGuard";
 import {inputCommentDataValidationMiddleware} from "../../comments/middlewares/validation/inputCommentDataValidationMiddleware";
 
@@ -27,7 +27,7 @@ postsRouter.get('/',
 );
 
 postsRouter.post('/',
-    basicAuthGuardMiddleware,
+    basicAuthGuard,
     inputPostDataValidationMiddleware,
     resultValidationMiddleware,
     createPostHandler,
@@ -40,7 +40,7 @@ postsRouter.get('/:id',
 );
 
 postsRouter.put('/:id',
-    basicAuthGuardMiddleware,
+    basicAuthGuard,
     idValidationMiddleware,
     inputPostDataValidationMiddleware,
     resultValidationMiddleware,
@@ -48,7 +48,7 @@ postsRouter.put('/:id',
 );
 
 postsRouter.delete('/:id',
-    basicAuthGuardMiddleware,
+    basicAuthGuard,
     idValidationMiddleware,
     resultValidationMiddleware,
     deletePostHandler,

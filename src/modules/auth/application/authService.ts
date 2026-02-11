@@ -1,5 +1,5 @@
 import {authRepository} from "../repository/authRepository";
-import type {AccessTokenResponseModel, LoginInputDataModel, RegistrationInputDataModel} from "../models/authModels";
+import type {TokensResponseModel, LoginInputDataModel, RegistrationInputDataModel} from "../models/authModels";
 import bcrypt from "bcrypt";
 import type {WithId} from "mongodb";
 import type {UserModel, UserOutputDataModel} from "../../users/models/usersModels";
@@ -13,29 +13,31 @@ import {usersRepository} from "../../users/repository/usersRepository";
 import {randomUUID} from "crypto";
 import {add} from "date-fns/add";
 import {createDateISO} from "../../../shared/utils/createDateISO";
+import {refreshTokenRepository} from "../repository/refreshTokenRepository";
 
 export const authService = {
-    async checkCredentials(data: LoginInputDataModel): Promise<AccessTokenResponseModel> {
+    async checkCredentials(data: LoginInputDataModel): Promise<TokensResponseModel> {
         const user: WithId<UserModel> | null = await authRepository.getUserPasswordByLoginOrEmail(data.loginOrEmail);
 
         if (!user) {
             return {
                 accessToken: null,
+                refreshToken: null,
             };
         }
-
-        console.log('user', user);
 
         const isPasswordCorrect: boolean = await bcrypt.compare(data.password, user.accountData.password);
 
         if (!isPasswordCorrect) {
             return {
                 accessToken: null,
+                refreshToken: null,
             };
         }
 
         return {
             accessToken: jwtService.createToken(user._id.toString()),
+            refreshToken: jwtService.createRefreshToken(user._id.toString()),
         };
     },
 
@@ -107,5 +109,33 @@ export const authService = {
 
         await authRepository.updateConfirmationCode(user.id, newConfirmationCode, newExpirationDate);
         await this.sendConfirmationEmail(user);
+    },
+
+    async refreshToken(refreshToken: string): Promise<TokensResponseModel> {
+        const tokenPayload = jwtService.verifyRefreshToken(refreshToken);
+
+        if (!tokenPayload || typeof tokenPayload === 'string') {
+            throw new CustomError('token', 'Invalid token', HTTP_STATUSES.UNAUTHORIZED);
+        }
+
+        const isTokenInvalidated = await refreshTokenRepository.isTokenInvalidated(refreshToken);
+
+        if (isTokenInvalidated) {
+            throw new CustomError('token', 'Invalid token', HTTP_STATUSES.UNAUTHORIZED);
+        }
+
+        await refreshTokenRepository.setInvalidatedToken({
+            token: refreshToken,
+            userId: tokenPayload.userId,
+            expiresAt: tokenPayload.expiresAt,
+            invalidatedAt: new Date(),
+        });
+
+        const {userId} = tokenPayload;
+
+        return {
+            accessToken: jwtService.createToken(userId),
+            refreshToken: jwtService.createRefreshToken(userId),
+        };
     },
 };

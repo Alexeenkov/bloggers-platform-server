@@ -3,8 +3,9 @@ export interface LoginInputDataModel {
     password: string
 }
 
-export interface AccessTokenResponseModel {
+export interface TokensResponseModel {
     accessToken: string | null
+    refreshToken: string | null
 }
 
 export interface RegistrationInputDataModel {
