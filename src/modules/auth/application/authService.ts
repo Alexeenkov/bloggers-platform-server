@@ -107,7 +107,14 @@ export const authService = {
     },
 
     async validateRefreshToken(token: string): Promise<TokenPayloadModel> {
-        const tokenPayload = jwtService.verifyRefreshToken(token);
+        let tokenPayload;
+
+        try {
+            tokenPayload = jwtService.verifyRefreshToken(token);
+        } catch (error) {
+            throw new CustomError('token', 'Invalid token', HTTP_STATUSES.UNAUTHORIZED);
+        }
+
         const isTokenInvalidated = await invalidTokensRepository.checkTokenInvalidated(token);
 
         const accessDenied =
