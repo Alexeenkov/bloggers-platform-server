@@ -7,7 +7,7 @@ export const logoutHandler = async (
     req: Request,
     res: Response,
 ) => {
-    const {refreshToken} = req;
+    const refreshToken = req.cookies?.refreshToken;
 
     if (!refreshToken) {
         res.sendStatus(HTTP_STATUSES.UNAUTHORIZED);
