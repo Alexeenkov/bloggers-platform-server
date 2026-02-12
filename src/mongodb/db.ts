@@ -30,9 +30,6 @@ export const db = {
     get comments(): Collection<CommentDBModel> {
         return getDatabase().collection<CommentDBModel>('comments');
     },
-    get refreshTokens(): Collection<RefreshTokenModel> {
-        return getDatabase().collection<RefreshTokenModel>('refreshTokens');
-    },
     get invalidatedTokens(): Collection<InvalidatedTokenModel> {
         return getDatabase().collection<InvalidatedTokenModel>('invalidatedTokens');
     },
@@ -59,16 +56,11 @@ const connectToDatabase = async (url: string): Promise<void> => {
  * и поиска инвалидированных токенов по токену
  * 
  * @description
- * Документы refreshTokens удаляются сразу после даты в поле expiresAt.
  * Документы invalidatedTokens удаляются сразу после даты в поле expiresAt.
  * Документы invalidatedTokens ищутся по токену в поле token.
  */
 const createIndexes = async (): Promise<void> => {
     try {
-        await db.refreshTokens.createIndex(
-            {expiresAt: 1},
-            {expireAfterSeconds: 0},
-        );
         await db.invalidatedTokens.createIndex(
             {expiresAt: 1},
             {expireAfterSeconds: 0},

@@ -13,26 +13,21 @@ import {usersRepository} from "../../users/repository/usersRepository";
 import {randomUUID} from "crypto";
 import {add} from "date-fns/add";
 import {createDateISO} from "../../../shared/utils/createDateISO";
-import {refreshTokenRepository} from "../repository/refreshTokenRepository";
+import {invalidTokensRepository} from "../repository/invalidTokensRepository";
+import {TokenPayloadModel} from "../models/refreshTokenModels";
 
 export const authService = {
     async checkCredentials(data: LoginInputDataModel): Promise<TokensResponseModel> {
         const user: WithId<UserModel> | null = await authRepository.getUserPasswordByLoginOrEmail(data.loginOrEmail);
 
         if (!user) {
-            return {
-                accessToken: null,
-                refreshToken: null,
-            };
+            throw new CustomError('user', 'Invalid login or email', HTTP_STATUSES.UNAUTHORIZED);
         }
 
         const isPasswordCorrect: boolean = await bcrypt.compare(data.password, user.accountData.password);
 
         if (!isPasswordCorrect) {
-            return {
-                accessToken: null,
-                refreshToken: null,
-            };
+            throw new CustomError('user', 'Invalid login or email', HTTP_STATUSES.UNAUTHORIZED);
         }
 
         return {
@@ -111,33 +106,44 @@ export const authService = {
         await this.sendConfirmationEmail(user);
     },
 
-    async refreshToken(refreshToken: string): Promise<TokensResponseModel> {
-        const tokenPayload = jwtService.verifyRefreshToken(refreshToken);
+    async validateRefreshToken(token: string): Promise<TokenPayloadModel> {
+        const tokenPayload = jwtService.verifyRefreshToken(token);
+        const isTokenInvalidated = await invalidTokensRepository.checkTokenInvalidated(token);
 
-        if (!tokenPayload || typeof tokenPayload === 'string') {
+        const accessDenied =
+            !tokenPayload
+            || typeof tokenPayload === 'string'
+            || !tokenPayload.userId
+            || isTokenInvalidated;
+
+        if (accessDenied) {
             throw new CustomError('token', 'Invalid token', HTTP_STATUSES.UNAUTHORIZED);
         }
 
-        // Проверяем наличие userId в payload
-        if (!tokenPayload.userId) {
-            throw new CustomError('token', 'Invalid token payload', HTTP_STATUSES.UNAUTHORIZED);
-        }
+        return tokenPayload as TokenPayloadModel;
+    },
 
-        // Проверяем, не инвалидирован ли токен (черный список)
-        // ВАЖНО: Проверка в service слое (не в middleware) для соблюдения слоистой архитектуры
-        const isTokenInvalidated = await refreshTokenRepository.isTokenInvalidated(refreshToken);
+    async invalidateRefreshToken(tokenPayload: TokenPayloadModel, refreshToken: string): Promise<void> {
+        const expiresAtDate = tokenPayload.exp
+            ? new Date(tokenPayload.exp * 1000)
+            : add(new Date(), {days: 30});
 
-        if (isTokenInvalidated) {
-            throw new CustomError('token', 'Token has been revoked', HTTP_STATUSES.UNAUTHORIZED);
-        }
+        await invalidTokensRepository.setInvalidatedToken({
+            token: refreshToken,
+            userId: tokenPayload.userId,
+            expiresAt: expiresAtDate,
+            invalidatedAt: new Date(),
+        });
+    },
 
-        // Инвалидируем старый refresh token (rotation tokens для безопасности)
-        // Конвертируем exp (Unix timestamp в секундах) в Date объект
-        const expiresAtDate = tokenPayload.exp 
-            ? new Date(tokenPayload.exp * 1000) 
-            : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // fallback: 30 дней
+    async refreshToken(refreshToken: string): Promise<TokensResponseModel> {
+        const tokenPayload = await this.validateRefreshToken(refreshToken);
 
-        await refreshTokenRepository.setInvalidatedToken({
+        const expiresAtDate = tokenPayload.exp
+            ? new Date(tokenPayload.exp * 1000)
+            : add(new Date(), {days: 30});
+
+        await invalidTokensRepository.setInvalidatedToken({
             token: refreshToken,
             userId: tokenPayload.userId,
             expiresAt: expiresAtDate,
@@ -146,7 +152,6 @@ export const authService = {
 
         const {userId} = tokenPayload;
 
-        // Генерируем новую пару токенов
         return {
             accessToken: jwtService.createToken(userId),
             refreshToken: jwtService.createRefreshToken(userId),
@@ -154,34 +159,8 @@ export const authService = {
     },
 
     async logout(refreshToken: string): Promise<void> {
-        const tokenPayload = jwtService.verifyRefreshToken(refreshToken);
+        const tokenPayload = await this.validateRefreshToken(refreshToken);
 
-        if (!tokenPayload || typeof tokenPayload === 'string') {
-            throw new CustomError('token', 'Invalid token', HTTP_STATUSES.UNAUTHORIZED);
-        }
-
-        if (!tokenPayload.userId) {
-            throw new CustomError('token', 'Invalid token payload', HTTP_STATUSES.UNAUTHORIZED);
-        }
-
-        // Проверяем, не инвалидирован ли токен уже
-        const isTokenInvalidated = await refreshTokenRepository.isTokenInvalidated(refreshToken);
-
-        if (isTokenInvalidated) {
-            // Токен уже в черном списке, просто возвращаемся
-            return;
-        }
-
-        // Добавляем токен в черный список
-        const expiresAtDate = tokenPayload.exp 
-            ? new Date(tokenPayload.exp * 1000) 
-            : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-
-        await refreshTokenRepository.setInvalidatedToken({
-            token: refreshToken,
-            userId: tokenPayload.userId,
-            expiresAt: expiresAtDate,
-            invalidatedAt: new Date(),
-        });
+        await this.invalidateRefreshToken(tokenPayload, refreshToken);
     },
 };

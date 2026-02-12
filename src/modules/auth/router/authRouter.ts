@@ -12,7 +12,6 @@ import {inputAuthDataValidationMiddleware} from "../middlewares/validation/input
 import {inputUserDataValidationMiddleware} from "../../users/middlewares/validation/inputUserDataValidationMiddleware";
 import {inputConfirmationValidationMiddleware} from "../middlewares/validation/inputRegistrationConfirmationDataValidationMiddleware";
 import {inputRegistrationEmailResendingValidationMiddleware} from "../middlewares/validation/inputRegistrationEmailResendingValidationMiddleware";
-import {refreshTokenGuard} from "../../../shared/middlewares/auth/refreshTokenGuard";
 
 export const authRouter = Router({});
 
@@ -41,13 +40,9 @@ authRouter.post('/registration-email-resending',
 );
 
 authRouter.post('/logout',
-    refreshTokenGuard,
-    resultValidationMiddleware,
     logoutHandler,
 );
 
 authRouter.post('/refresh-token',
-    refreshTokenGuard,
-    resultValidationMiddleware,
     refreshTokenHandler,
 );

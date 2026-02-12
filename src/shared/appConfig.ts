@@ -4,6 +4,7 @@ import {StringValue} from "ms";
 config();
 
 export const appConfig = {
+    nodeEnv: process.env.NODE_ENV,
     port: process.env.PORT || 3003,
     mongoUri: process.env.MONGO_URL,
     adminUsername: process.env.ADMIN_USERNAME,
