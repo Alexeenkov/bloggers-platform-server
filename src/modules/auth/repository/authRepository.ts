@@ -3,9 +3,9 @@ import type {UpdateResult, WithId} from "mongodb";
 import type {UserModel} from "../../users/models/usersModels";
 import {ObjectId} from "mongodb";
 import {mappingUserConfirmationEmail} from "../features/mappingUserConfirmationEmail";
-import {UserConfirmationEmailOutputDataModel} from "../models/authModels";
+import {UserConfirmationEmailOutputDataModel, WithIsConfirmedModel} from "../models/authModels";
 import {UserOutputDataModel} from "../../users/models/usersModels";
-import {mappingUser} from "../../users/features/mappingUser";
+import {mappingUser} from "../features/mappingUser";
 
 export const authRepository = {
     async getUserPasswordByLoginOrEmail(loginOrEmail: string): Promise<WithId<UserModel> | null> {
@@ -47,7 +47,7 @@ export const authRepository = {
         return result.matchedCount === 1;
     },
 
-    async getUserByEmail(email: string): Promise<UserOutputDataModel | null> {
+    async getUserByEmail(email: string): Promise<WithIsConfirmedModel<UserOutputDataModel> | null> {
         const user = await db.users.findOne({'accountData.email': email});
 
         if (!user) {

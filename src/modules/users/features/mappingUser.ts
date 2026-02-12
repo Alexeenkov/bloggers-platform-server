@@ -7,6 +7,5 @@ export const mappingUser = (user: WithId<UserModel>): UserOutputDataModel => {
         login: user.accountData.login,
         email: user.accountData.email,
         createdAt: user.accountData.createdAt,
-        isConfirmed: user.emailConfirmation.isConfirmed,
     }
 };

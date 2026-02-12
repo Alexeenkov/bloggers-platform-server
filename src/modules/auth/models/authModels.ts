@@ -24,3 +24,5 @@ export interface UserConfirmationEmailOutputDataModel {
     expirationDate: Date
     isConfirmed: boolean
 }
+
+export type WithIsConfirmedModel<T extends object> = T & {isConfirmed: boolean};

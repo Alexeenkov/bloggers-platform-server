@@ -27,7 +27,6 @@ export interface UserOutputDataModel {
     login: string
     email: string
     createdAt: ISO8601StringModel
-    isConfirmed: boolean
 }
 
 export interface UsersQueryModel {
