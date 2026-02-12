@@ -34,7 +34,7 @@ export const usersQueryRepository = {
         }
 
         const foundUsers = await db.users.find(filter)
-            .sort({[sortBy]: sortDirection})
+            .sort({[`accountData.${sortBy}`]: sortDirection})
             .skip(skip)
             .limit(pageSize)
             .toArray();
