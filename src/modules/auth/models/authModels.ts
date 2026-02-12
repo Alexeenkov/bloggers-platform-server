@@ -26,3 +26,9 @@ export interface UserConfirmationEmailOutputDataModel {
 }
 
 export type WithIsConfirmedModel<T extends object> = T & {isConfirmed: boolean};
+
+export interface MeOutputDataModel {
+    userId: string
+    login: string
+    email: string
+}

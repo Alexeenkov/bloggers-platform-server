@@ -117,6 +117,7 @@ const ui = SwaggerUIBundle({
                 "post": {
                     "summary": "Обновляет токен доступа",
                     "tags": ["Auth"],
+                    "security": [{"RefreshToken": []}],
                     "responses": {
                         "200": {
                             "description": "Токен доступа обновлён",
@@ -136,8 +137,27 @@ const ui = SwaggerUIBundle({
                 "post": {
                     "summary": "Выходит из системы",
                     "tags": ["Auth"],
+                    "security": [{"RefreshToken": []}],
                     "responses": {
                         "204": {"description": "Пользователь успешно вышел из системы"},
+                        "401": {"description": "Не прошёл авторизацию"}
+                    }
+                }
+            },
+            "/api/auth/me": {
+                "get": {
+                    "summary": "Возвращает информацию о текущем пользователе",
+                    "tags": ["Auth"],
+                    "security": [{"Bearer": []}],
+                    "responses": {
+                        "200": {
+                            "description": "Информация о текущем пользователе",
+                            "content": {
+                                "application/json": {
+                                    "schema": {"$ref": "#/components/schemas/MeOutputDataModel"}
+                                }
+                            }
+                        },
                         "401": {"description": "Не прошёл авторизацию"}
                     }
                 }
@@ -1100,6 +1120,12 @@ const ui = SwaggerUIBundle({
                     "type": "http",
                     "scheme": "bearer",
                     "bearerFormat": "JWT"
+                },
+                "RefreshToken": {
+                    "type": "http",
+                    "scheme": "bearer",
+                    "bearerFormat": "JWT",
+                    "description": "JWT refreshToken inside cookies"
                 }
             },
             "schemas": {
@@ -1179,6 +1205,24 @@ const ui = SwaggerUIBundle({
                             "description": "JWT токен доступа",
                             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                         }
+                    }
+                },
+                "MeOutputDataModel": {
+                    "type": "object",
+                    "required": ["accessToken"],
+                    "properties": {
+                        "userId": {
+                            "type": "string",
+                            "description": "Уникальный идентификатор пользователя",
+                        },
+                        "login": {
+                            "type": "string",
+                            "description": "Логин пользователя",
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": "Email пользователя",
+                        },
                     }
                 },
                 "BlogOutputData": {
