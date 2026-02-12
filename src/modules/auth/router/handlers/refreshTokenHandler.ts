@@ -25,7 +25,7 @@ export const refreshTokenHandler = async (
         maxAge: add(new Date(), {days: 30}).getTime(),
     });
 
-    res.json({
+    res.status(HTTP_STATUSES.OK).json({
         accessToken: tokens.accessToken,
     });
 };

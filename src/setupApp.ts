@@ -16,6 +16,7 @@ import {
 import {usersRouter} from "./modules/users/router/usersRouter";
 import {customErrorMiddleware} from "./shared/middlewares/customError/customErrorMiddleware";
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import {authRouter} from "./modules/auth/router/authRouter";
 import {commentsRouter} from "./modules/comments/router/commentsRouter";
 
@@ -24,6 +25,7 @@ export const setupApp = (app: Express): Express => {
         origin: '*',
     }));
     app.use(express.json());
+    app.use(cookieParser());
 
     app.get('/', (_: Request, res: Response) => {
         res.status(HTTP_STATUSES.OK).send('Bloggers platform server');
